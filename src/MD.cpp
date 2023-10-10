@@ -30,7 +30,7 @@
 
 
 // Number of particles
-int N;
+int N = 2160;
 
 //  Lennard-Jones parameters in natural units!
 double sigma = 1.;
@@ -85,12 +85,12 @@ int main()
 {
     
     //  variable delcarations
-    int i;
+    int i, NumTime;
     double dt, Vol, Temp, Press, Pavg, Tavg, rho;
     double VolFac, TempFac, PressFac, timefac;
     double KE, PE, mvs, gc, Z;
-    char trash[10000], prefix[1000], tfn[1000], ofn[1000], afn[1000];
-    FILE *infp, *tfp, *ofp, *afp;
+    char prefix[1000], tfn[1000], ofn[1000], afn[1000];
+    FILE *tfp, *ofp, *afp;
     
     scanf("%s",prefix);
     strcpy(tfn,prefix);
@@ -118,39 +118,56 @@ int main()
     //  the gas being simulated
     
     scanf("%s",atype);
-
-    switch (atype){
-        case "He":
-            VolFac = 1.8399744000000005e-29;
-            PressFac = 8152287.336171632;
-            TempFac = 10.864459551225972;
-            timefac = 1.7572698825166272e-12;
-            break;
-        case "Ne":
-            VolFac = 2.0570823999999997e-29;
-            PressFac = 27223022.27659913;
-            TempFac = 40.560648991243625;
-            timefac = 2.1192341945685407e-12;
-            break;
-        case "Kr":
-            VolFac = 4.5882712000000004e-29;
-            PressFac = 59935428.40275003;
-            TempFac = 199.1817584391428;
-            timefac = 8.051563913585078e-13;
-            break;
-        case "Xe":
-            VolFac = 5.4872e-29;
-            PressFac = 70527773.72794868;
-            TempFac = 280.30305642163006;
-            timefac = 9.018957925790732e-13;
-            break;
-        default:
-            VolFac = 3.7949992920124995e-29;
-            PressFac = 51695201.06691862;
-            TempFac = 142.0950000000000;
-            timefac = 2.09618e-12;
-            strcpy(atype,"Ar");
-            break;
+    
+    if (strcmp(atype,"He")==0) {
+        
+        VolFac = 1.8399744000000005e-29;
+        PressFac = 8152287.336171632;
+        TempFac = 10.864459551225972;
+        timefac = 1.7572698825166272e-12;
+        
+    }
+    else if (strcmp(atype,"Ne")==0) {
+        
+        VolFac = 2.0570823999999997e-29;
+        PressFac = 27223022.27659913;
+        TempFac = 40.560648991243625;
+        timefac = 2.1192341945685407e-12;
+        
+    }
+    else if (strcmp(atype,"Ar")==0) {
+        
+        VolFac = 3.7949992920124995e-29;
+        PressFac = 51695201.06691862;
+        TempFac = 142.0950000000000;
+        timefac = 2.09618e-12;
+        //strcpy(atype,"Ar");
+        
+    }
+    else if (strcmp(atype,"Kr")==0) {
+        
+        VolFac = 4.5882712000000004e-29;
+        PressFac = 59935428.40275003;
+        TempFac = 199.1817584391428;
+        timefac = 8.051563913585078e-13;
+        
+    }
+    else if (strcmp(atype,"Xe")==0) {
+        
+        VolFac = 5.4872e-29;
+        PressFac = 70527773.72794868;
+        TempFac = 280.30305642163006;
+        timefac = 9.018957925790732e-13;
+        
+    }
+    else {
+        
+        VolFac = 3.7949992920124995e-29;
+        PressFac = 51695201.06691862;
+        TempFac = 142.0950000000000;
+        timefac = 2.09618e-12;
+        strcpy(atype,"Ar");
+        
     }
 
     scanf("%lf",&Tinit);
@@ -164,7 +181,6 @@ int main()
     
     scanf("%lf",&rho);
     
-    N = 10*216;
     Vol = N/(rho*NA);
     
     Vol /= VolFac;
@@ -181,6 +197,11 @@ int main()
     //  and volume = L*L*L, so if V = N*L*L*L = N, then all the particles
     //  will be initialized with an interparticle separation equal to 2xVDW radius
     if (Vol<N) {
+        
+        printf("\n\n\n  YOUR DENSITY IS VERY HIGH!\n\n");
+        printf("  THE NUMBER OF PARTICLES IS %i AND THE AVAILABLE VOLUME IS %f NATURAL UNITS\n",N,Vol);
+        printf("  SIMULATIONS WITH DENSITY GREATER THAN 1 PARTCICLE/(1 Natural Unit of Volume) MAY DIVERGE\n");
+        printf("  PLEASE ADJUST YOUR INPUT FILE ACCORDINGLY AND RETRY\n\n");
         exit(0);
     }
     // Vol = L*L*L;
@@ -188,11 +209,12 @@ int main()
     L = pow(Vol,(1./3));
     
     //  Files that we can write different quantities to
-    tfp = fopen(tfn,"w");  //  The MD trajectory, coordinates of every particle at each timestep
-    ofp = fopen(ofn,"w");  //  Output of other quantities (T, P, gc, etc) at every timestep
-    afp = fopen(afn,"w");  //  Average T, P, gc, etc from the simulation
+    tfp = fopen(tfn,"w");     //  The MD trajectory, coordinates of every particle at each timestep
+    ofp = fopen(ofn,"w");     //  Output of other quantities (T, P, gc, etc) at every timestep
+    afp = fopen(afn,"w");    //  Average T, P, gc, etc from the simulation
     
-    int NumTime;
+    NumTime = 200;
+    dt = 0.5e-14/timefac;
     if (strcmp(atype,"He")==0) {
         
         // dt in natural units of time s.t. in SI it is 5 f.s. for all other gasses
@@ -201,11 +223,6 @@ int main()
         //  The total time will be NumTime*dt in natural units
         //  And NumTime*dt multiplied by the appropriate conversion factor for time in seconds
         NumTime=50000;
-    }
-    else {
-        dt = 0.5e-14/timefac;
-        NumTime=200;
-        
     }
     
     //  Put all the atoms in simple crystal lattice and give them random velocities
@@ -288,9 +305,6 @@ int main()
     fprintf(afp," --------------   -----------        ---------------   --------------   ---------------   ------------   -----------\n");
     fprintf(afp,"  %8.4e  %15.5f       %15.5f     %10.5f       %10.5f        %10.5e         %i\n",i*dt*timefac,Tavg,Pavg,gc,Z,Vol*VolFac,N);
     
-    printf("\n  TO ANIMATE YOUR SIMULATION, OPEN THE FILE \n  '%s' WITH VMD AFTER THE SIMULATION COMPLETES\n",tfn);
-    printf("\n  TO ANALYZE INSTANTANEOUS DATA ABOUT YOUR MOLECULE, OPEN THE FILE \n  '%s' WITH YOUR FAVORITE TEXT EDITOR OR IMPORT THE DATA INTO EXCEL\n",ofn);
-    printf("\n  THE FOLLOWING THERMODYNAMIC AVERAGES WILL BE COMPUTED AND WRITTEN TO THE FILE  \n  '%s':\n",afn);
     printf("\n  AVERAGE TEMPERATURE (K):                 %15.5f\n",Tavg);
     printf("\n  AVERAGE PRESSURE  (Pa):                  %15.5f\n",Pavg);
     printf("\n  PV/nT (J * mol^-1 K^-1):                 %15.5f\n",gc);
@@ -322,15 +336,18 @@ void initialize() {
     
     //  index for number of particles assigned positions
     p = 0;
+    double xPos, yPos, halfPos;
+    halfPos = 0.5 * pos;
     //  initialize positions
     for (i=0; i<n; i++) {
+        xPos = i*pos + halfPos;
         for (j=0; j<n; j++) {
+            yPos = j*pos + halfPos;
             for (k=0; k<n; k++) {
                 if (p<N) {
-                    
-                    r[p][0] = (i + 0.5)*pos;
-                    r[p][1] = (j + 0.5)*pos;
-                    r[p][2] = (k + 0.5)*pos;
+                    r[p][0] = xPos;
+                    r[p][1] = yPos;
+                    r[p][2] = k*pos + halfPos;
                 }
                 p++;
             }
@@ -352,10 +369,8 @@ void initialize() {
      printf("  %6.3e  %6.3e  %6.3e\n",v[i][0],v[i][1],v[i][2]);
      }
      */
-    
-    
-    
-}   
+ 
+}
 
 
 //  Function to calculate the averaged velocity squared
@@ -531,28 +546,20 @@ double VelocityVerlet(double dt, int iter, FILE *fp) {
 void initializeVelocities() {
     
     int i, j;
+    double vCM[3] = {0, 0, 0};
+    double vSqdSum=0.;
+    double lambda;
     
     for (i=0; i<N; i++) {
-        
         for (j=0; j<3; j++) {
             //  Pull a number from a Gaussian Distribution
             v[i][j] = gaussdist();
-            
+            vCM[j] += m*v[i][j];
         }
     }
     
     // Vcm = sum_i^N  m*v_i/  sum_i^N  M
     // Compute center-of-mas velocity according to the formula above
-    double vCM[3] = {0, 0, 0};
-    
-    for (i=0; i<N; i++) {
-        for (j=0; j<3; j++) {
-            
-            vCM[j] += m*v[i][j];
-            
-        }
-    }
-    
     
     for (i=0; i<3; i++) vCM[i] /= N*m;
     
@@ -562,31 +569,19 @@ void initializeVelocities() {
     //  not drift in space!
     for (i=0; i<N; i++) {
         for (j=0; j<3; j++) {
-            
             v[i][j] -= vCM[j];
-            
+            vSqdSum += v[i][j]*v[i][j];
         }
     }
     
     //  Now we want to scale the average velocity of the system
     //  by a factor which is consistent with our initial temperature, Tinit
-    double vSqdSum, lambda;
-    vSqdSum=0.;
-    for (i=0; i<N; i++) {
-        for (j=0; j<3; j++) {
-            
-            vSqdSum += v[i][j]*v[i][j];
-            
-        }
-    }
     
     lambda = sqrt( 3*(N-1)*Tinit/vSqdSum);
     
     for (i=0; i<N; i++) {
         for (j=0; j<3; j++) {
-            
             v[i][j] *= lambda;
-            
         }
     }
 }
