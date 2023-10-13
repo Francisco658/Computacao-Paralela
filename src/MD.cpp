@@ -435,8 +435,8 @@ double Potential() {
                 }
                 rnorm=sqrt(r2);
                 quot=sigma/rnorm;
-                term1 = pow(quot,12.);
-                term2 = pow(quot,6.);
+                term1 = quot * quot * quot * quot * quot * quot * quot * quot * quot * quot * quot * quot;
+                term2 = quot * quot * quot * quot * quot * quot;
                 
                 Pot += 4*epsilon*(term1 - term2);
                 
@@ -586,12 +586,11 @@ void initializeVelocities() {
     }
 }
 
-
 //  Numerical recipes Gaussian distribution number generator
 double gaussdist() {
     static bool available = false;
     static double gset;
-    double fac, rsq, v1, v2;
+    double fac, rsq, v1, v2, returnValue;
     if (!available) {
         do {
             v1 = 2.0 * rand() / double(RAND_MAX) - 1.0;
@@ -603,11 +602,12 @@ double gaussdist() {
         gset = v1 * fac;
         available = true;
         
-        return v2*fac;
+        returnValue =  v2*fac;
     } else {
         
         available = false;
-        return gset;
+        returnValue = gset;
         
     }
+    return returnValue;
 }
