@@ -206,7 +206,9 @@ int main()
     }
     // Vol = L*L*L;
     // Length of the box in natural units:
-    L = pow(Vol,(1./3));
+    // Raíz cúbica
+    //L = pow(Vol,(1./3));
+    L = cbrt(Vol);
     
     //  Files that we can write different quantities to
     tfp = fopen(tfn,"w");     //  The MD trajectory, coordinates of every particle at each timestep
@@ -329,7 +331,8 @@ void initialize() {
     double pos;
     
     // Number of atoms in each direction
-    n = int(ceil(pow(N, 1.0/3)));
+    //n = int(ceil(pow(N, 1.0/3)));
+    n = int(ceil(cbrt(N)));
     
     //  spacing between atoms along a given direction
     pos = L / n;
@@ -404,12 +407,13 @@ double Kinetic() { //Write Function here!
     for (int i=0; i<N; i++) {
         
         v2 = 0.;
-        for (int j=0; j<3; j++) {
+
+        double value0 = v[i][0]*v[i][0];
+        double value1 = v[i][1]*v[i][1];
+        double value2 = v[i][2]*v[i][2];
+        v2 = value0 + value1 + value2;
             
-            v2 += v[i][j]*v[i][j];
-            
-        }
-        kin += m*v2/2.;
+        kin += m*v2*0.5;
         
     }
     
@@ -421,24 +425,32 @@ double Kinetic() { //Write Function here!
 
 // Function to calculate the potential energy of the system
 double Potential() {
-    double quot, r2, rnorm, term1, term2, Pot;
+    double quot, r2, rnorm, term1, term2, Pot, factor1;
     int i, j, k;
     
     Pot=0.;
+    factor1 = 4 * epsilon;
     for (i=0; i<N; i++) {
-        for (j=0; j<N; j++) {
+        for (j=i+1; j<N; j++) {
             
             if (j!=i) {
                 r2=0.;
-                for (k=0; k<3; k++) {
-                    r2 += (r[i][k]-r[j][k])*(r[i][k]-r[j][k]);
-                }
+
+                double diff0 = r[i][0] - r[j][0];
+                double diff1 = r[i][1] - r[j][1];
+                double diff2 = r[i][2] - r[j][2];
+                double r2 = diff0 * diff0 + diff1 * diff1 + diff2 * diff2;
+
+                // Versão sem sqrt
+                //double r2_inv = 1.0 / r2;
+                //quot = sigma * sigma * r2_inv;
+
                 rnorm=sqrt(r2);
                 quot=sigma/rnorm;
                 term1 = quot * quot * quot * quot * quot * quot * quot * quot * quot * quot * quot * quot;
                 term2 = quot * quot * quot * quot * quot * quot;
                 
-                Pot += 4*epsilon*(term1 - term2);
+                Pot += factor1*(term1 - term2);
                 
             }
         }
@@ -476,7 +488,9 @@ void computeAccelerations() {
             }
             
             //  From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
-            f = 24 * (2 * pow(rSqd, -7) - pow(rSqd, -4));
+            double rSqd_inv7 = 1.0 / (rSqd * rSqd * rSqd * rSqd * rSqd * rSqd * rSqd);
+            double rSqd_inv4 = 1.0 / (rSqd * rSqd * rSqd * rSqd);
+            f = 24 * (2 * rSqd_inv7 - rSqd_inv4);
             for (k = 0; k < 3; k++) {
                 //  from F = ma, where m = 1 in natural units!
                 a[i][k] += rij[k] * f;
