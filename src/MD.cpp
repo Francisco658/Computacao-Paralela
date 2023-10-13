@@ -389,6 +389,12 @@ double MeanSquaredVelocity() {
         vx2 = vx2 + v[i][0]*v[i][0];
         vy2 = vy2 + v[i][1]*v[i][1];
         vz2 = vz2 + v[i][2]*v[i][2];
+
+        //double vx = v[i][0];
+        //double vy = v[i][1];
+        //double vz = v[i][2];
+        
+        //v2 += (vx * vx + vy * vy + vz * vz);
         
     }
     v2 = (vx2+vy2+vz2)/N;
@@ -471,9 +477,9 @@ void computeAccelerations() {
     
     
     for (i = 0; i < N; i++) {  // set all accelerations to zero
-        for (k = 0; k < 3; k++) {
-            a[i][k] = 0;
-        }
+        a[i][0] = 0;
+        a[i][1] = 0;
+        a[i][2] = 0;
     }
     for (i = 0; i < N-1; i++) {   // loop over all distinct pairs i,j
         for (j = i+1; j < N; j++) {
@@ -491,6 +497,22 @@ void computeAccelerations() {
             double rSqd_inv7 = 1.0 / (rSqd * rSqd * rSqd * rSqd * rSqd * rSqd * rSqd);
             double rSqd_inv4 = 1.0 / (rSqd * rSqd * rSqd * rSqd);
             f = 24 * (2 * rSqd_inv7 - rSqd_inv4);
+
+            // Use temporary variables for a[i] and a[j]
+            /*double ai[3];
+            double aj[3];
+            
+            for (k = 0; k < 3; k++) {
+                ai[k] = rij[k] * f;
+                aj[k] = -ai[k];
+            }
+            
+            // Update a[i] and a[j] once for each pair
+            for (k = 0; k < 3; k++) {
+                a[i][k] += ai[k];
+                a[j][k] += aj[k];
+            }*/
+
             for (k = 0; k < 3; k++) {
                 //  from F = ma, where m = 1 in natural units!
                 a[i][k] += rij[k] * f;
@@ -505,17 +527,18 @@ double VelocityVerlet(double dt, int iter, FILE *fp) {
     int i, j, k;
     
     double psum = 0.;
-    
+    double dt1 = 0.5 * dt;
     //  Compute accelerations from forces at current position
     // this call was removed (commented) for predagogical reasons
     //computeAccelerations();
     //  Update positions and velocity with current velocity and acceleration
     //printf("  Updated Positions!\n");
+
     for (i=0; i<N; i++) {
         for (j=0; j<3; j++) {
-            r[i][j] += v[i][j]*dt + 0.5*a[i][j]*dt*dt;
+            r[i][j] += v[i][j]*dt + a[i][j]*dt1*dt;
             
-            v[i][j] += 0.5*a[i][j]*dt;
+            v[i][j] += a[i][j]*dt1;
         }
         //printf("  %i  %6.4e   %6.4e   %6.4e\n",i,r[i][0],r[i][1],r[i][2]);
     }
@@ -524,20 +547,17 @@ double VelocityVerlet(double dt, int iter, FILE *fp) {
     //  Update velocity with updated acceleration
     for (i=0; i<N; i++) {
         for (j=0; j<3; j++) {
-            v[i][j] += 0.5*a[i][j]*dt;
+            v[i][j] += a[i][j]*dt1;
         }
     }
     
     // Elastic walls
     for (i=0; i<N; i++) {
         for (j=0; j<3; j++) {
-            if (r[i][j]<0.) {
-                v[i][j] *=-1.; //- elastic walls
-                psum += 2*m*fabs(v[i][j])/dt;  // contribution to pressure from "left" walls
-            }
-            if (r[i][j]>=L) {
-                v[i][j]*=-1.;  //- elastic walls
-                psum += 2*m*fabs(v[i][j])/dt;  // contribution to pressure from "right" walls
+            double condicao = r[i][j];
+            if (condicao<0. || condicao>=L) {
+                v[i][j] *=-1.;
+                psum += 2*m*fabs(v[i][j])/dt;
             }
         }
     }
