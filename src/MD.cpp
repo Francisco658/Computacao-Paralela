@@ -66,7 +66,7 @@ void initialize();
 //  update positions and velocities using Velocity Verlet algorithm 
 //  print particle coordinates to file for rendering via VMD or other animation software
 //  return 'instantaneous pressure'
-double VelocityVerlet(double dt, int iter, FILE *fp);  
+double VelocityVerlet(double dt, FILE *fp);  
 //  Compute Force using F = -dV/dr
 //  solve F = ma for use in Velocity Verlet
 void computeAccelerations();
@@ -268,7 +268,7 @@ int main()
         // This updates the positions and velocities using Newton's Laws
         // Also computes the Pressure as the sum of momentum changes from wall collisions / timestep
         // which is a Kinetic Theory of gasses concept of Pressure
-        Press = VelocityVerlet(dt, i+1, tfp);
+        Press = VelocityVerlet(dt, tfp);
         Press *= PressFac;
         
         //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -523,7 +523,7 @@ void computeAccelerations() {
 }
 
 // returns sum of dv/dt*m/A (aka Pressure) from elastic collisions with walls
-double VelocityVerlet(double dt, int iter, FILE *fp) {
+double VelocityVerlet(double dt, FILE *fp) {
     int i, j;
     
     double psum = 0.;
@@ -557,7 +557,7 @@ double VelocityVerlet(double dt, int iter, FILE *fp) {
             double condicao = r[i][j];
             if (condicao<0. || condicao>=L) {
                 v[i][j] *=-1.;
-                psum += 2*fabs(v[i][j])/dt;
+                psum += fabs(v[i][j]);
             }
         }
     }
@@ -573,7 +573,7 @@ double VelocityVerlet(double dt, int iter, FILE *fp) {
     }*/
     //fprintf(fp,"\n \n");
     
-    return psum/(6*L*L);
+    return psum/(3*L*L*dt);
 }
 
 
