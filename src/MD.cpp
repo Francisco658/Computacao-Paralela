@@ -33,10 +33,10 @@
 int N = 2160;
 
 //  Lennard-Jones parameters in natural units!
-double sigma = 1.;
-double epsilon = 1.;
-double m = 1.;
-double kB = 1.;
+//  double sigma = 1.;
+//  double epsilon = 1.;
+//  double m = 1.;
+//  double kB = 1.;
 
 double NA = 6.022140857e23;
 double kBSI = 1.38064852e-23;  // m^2*kg/(s^2*K)
@@ -281,7 +281,7 @@ int main()
         PE = Potential();
         
         // Temperature from Kinetic Theory
-        Temp = m*mvs/(3*kB) * TempFac;
+        Temp = mvs/3 * TempFac;
         
         // Instantaneous gas constant and compressibility - not well defined because
         // pressure may be zero in some instances because there will be zero wall collisions,
@@ -419,7 +419,7 @@ double Kinetic() { //Write Function here!
         double value2 = v[i][2]*v[i][2];
         v2 = value0 + value1 + value2;
             
-        kin += m*v2*0.5;
+        kin += v2*0.5;
         
     }
     
@@ -431,32 +431,31 @@ double Kinetic() { //Write Function here!
 
 // Function to calculate the potential energy of the system
 double Potential() {
-    double quot, r2, rnorm, term1, term2, Pot, factor1;
-    int i, j, k;
+    double quot, r2, rnorm, term1, term2, Pot, diff0, diff1, diff2;
+    int i, j;
     
     Pot=0.;
-    factor1 = 4 * epsilon;
     for (i=0; i<N; i++) {
-        for (j=i+1; j<N; j++) {
+        for (j=0; j<N; j++) {
             
             if (j!=i) {
                 r2=0.;
 
-                double diff0 = r[i][0] - r[j][0];
-                double diff1 = r[i][1] - r[j][1];
-                double diff2 = r[i][2] - r[j][2];
-                double r2 = diff0 * diff0 + diff1 * diff1 + diff2 * diff2;
+                diff0 = r[i][0] - r[j][0];
+                diff1 = r[i][1] - r[j][1];
+                diff2 = r[i][2] - r[j][2];
+                r2 = diff0 * diff0 + diff1 * diff1 + diff2 * diff2;
 
                 // Versão sem sqrt
                 //double r2_inv = 1.0 / r2;
                 //quot = sigma * sigma * r2_inv;
 
                 rnorm=sqrt(r2);
-                quot=sigma/rnorm;
+                quot=1/rnorm;
                 term1 = quot * quot * quot * quot * quot * quot * quot * quot * quot * quot * quot * quot;
                 term2 = quot * quot * quot * quot * quot * quot;
                 
-                Pot += factor1*(term1 - term2);
+                Pot += 4*(term1 - term2);
                 
             }
         }
@@ -472,8 +471,9 @@ double Potential() {
 //   accelleration of each atom. 
 void computeAccelerations() {
     int i, j, k;
-    double f, rSqd;
+    double f, rSqd, aux;
     double rij[3]; // position of i relative to j
+    double rS0,rS1,rS2,auxrij;
     
     
     for (i = 0; i < N; i++) {  // set all accelerations to zero
@@ -485,18 +485,17 @@ void computeAccelerations() {
         for (j = i+1; j < N; j++) {
             // initialize r^2 to zero
             rSqd = 0;
-            
-            for (k = 0; k < 3; k++) {
-                //  component-by-componenent position of i relative to j
-                rij[k] = r[i][k] - r[j][k];
-                //  sum of squares of the components
-                rSqd += rij[k] * rij[k];
-            }
+            rij[0]=r[i][0] - r[j][0];
+            rS0 = rij[0]*rij[0];
+            rij[1]=r[i][1] - r[j][1];
+            rS1 = rij[1]*rij[1];
+            rij[2]=r[i][2] - r[j][2];
+            rS2 = rij[2]*rij[2];
+            rSqd = rS0+rS1+rS2;
             
             //  From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
-            double rSqd_inv7 = 1.0 / (rSqd * rSqd * rSqd * rSqd * rSqd * rSqd * rSqd);
-            double rSqd_inv4 = 1.0 / (rSqd * rSqd * rSqd * rSqd);
-            f = 24 * (2 * rSqd_inv7 - rSqd_inv4);
+            aux = rSqd*rSqd*rSqd;
+            f = 24 * ((2 - aux)/(aux*aux*rSqd));
 
             // Use temporary variables for a[i] and a[j]
             /*double ai[3];
@@ -515,8 +514,9 @@ void computeAccelerations() {
 
             for (k = 0; k < 3; k++) {
                 //  from F = ma, where m = 1 in natural units!
-                a[i][k] += rij[k] * f;
-                a[j][k] -= rij[k] * f;
+                auxrij= rij[k] * f;
+                a[i][k] += auxrij;
+                a[j][k] -= auxrij;
             }
         }
     }
@@ -524,7 +524,7 @@ void computeAccelerations() {
 
 // returns sum of dv/dt*m/A (aka Pressure) from elastic collisions with walls
 double VelocityVerlet(double dt, int iter, FILE *fp) {
-    int i, j, k;
+    int i, j;
     
     double psum = 0.;
     double dt1 = 0.5 * dt;
@@ -557,7 +557,7 @@ double VelocityVerlet(double dt, int iter, FILE *fp) {
             double condicao = r[i][j];
             if (condicao<0. || condicao>=L) {
                 v[i][j] *=-1.;
-                psum += 2*m*fabs(v[i][j])/dt;
+                psum += 2*fabs(v[i][j])/dt;
             }
         }
     }
@@ -588,14 +588,14 @@ void initializeVelocities() {
         for (j=0; j<3; j++) {
             //  Pull a number from a Gaussian Distribution
             v[i][j] = gaussdist();
-            vCM[j] += m*v[i][j];
+            vCM[j] += v[i][j];
         }
     }
     
     // Vcm = sum_i^N  m*v_i/  sum_i^N  M
     // Compute center-of-mas velocity according to the formula above
     
-    for (i=0; i<3; i++) vCM[i] /= N*m;
+    for (i=0; i<3; i++) vCM[i] /= N;
     
     //  Subtract out the center-of-mass velocity from the
     //  velocity of each particle... effectively set the
