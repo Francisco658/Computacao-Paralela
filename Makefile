@@ -1,6 +1,6 @@
 CC = gcc
 SRC = src/
-CFLAGS = -g -fno-omit-frame-pointer -O2
+CFLAGS = -Wall -pg -fno-omit-frame-pointer -ftree-vectorize -O2
 
 .DEFAULT_GOAL = MD.exe
 
@@ -8,7 +8,7 @@ MD.exe: $(SRC)/MD.cpp
 	$(CC) $(CFLAGS) $(SRC)MD.cpp -lm -o MD.exe
 
 clean:
-	rm ./MD.exe
+	find . -type f \( ! -path "./src/*" ! -name "Makefile" ! -name "inputdata.txt" \) -exec rm -v {} \;
 
 run:
 	./MD.exe < inputdata.txt
