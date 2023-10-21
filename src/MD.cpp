@@ -40,7 +40,7 @@ double VelocityVerlet(double dt, FILE *fp);
 //  Compute Force using F = -dV/dr
 //  solve F = ma for use in Velocity Verlet
 //  Compute total potential energy from particle coordinates
-void computeAccelerations();
+void computeAccelerationsPotential();
 
 //  Numerical Recipes function for generation gaussian distribution
 double gaussdist();
@@ -164,7 +164,7 @@ int main(){
     }
 
     initialize();
-    computeAccelerations();
+    computeAccelerationsPotential();
     
     fprintf(tfp,"%i\n",N);
     fprintf(ofp,"  time (s)              T(t) (K)              P(t) (Pa)           Kinetic En. (n.u.)     Potential En. (n.u.) Total En. (n.u.)\n");
@@ -268,9 +268,9 @@ double MeanSquaredVelocityKinetic() {
 //   Uses the derivative of the Lennard-Jones potential to calculate
 //   the forces on each atom.  Then uses a = F/m to calculate the
 //   accelleration of each atom. 
-void computeAccelerations() {
-    int i, j, k, aux1, aux2;
-    double Pot=0., f, rSqd, rSqd3,rSqd6,auxrij;
+void computeAccelerationsPotential() {
+    int i, j, k, pos1, pos2;
+    double Pot=0., f, rSqd, rSqd3, rSqd6, auxrij;
     double rij[3]; // position of i relative to j
     
     for (i = 0; i < N*3; i++) {  // set all accelerations to zero
@@ -278,13 +278,13 @@ void computeAccelerations() {
     }
 
     for (i = 0; i < N-1; i++) {   // loop over all distinct pairs i,j
-        aux1 = i*3;
+        pos1 = i*3;
         for (j = i+1; j < N; j++) {
-            aux2 = j*3;
+            pos2 = j*3;
             rSqd = 0;
-            rij[0]=r[aux1] - r[aux2];
-            rij[1]=r[aux1+1] - r[aux2+1];
-            rij[2]=r[aux1+2] - r[aux2+2];
+            rij[0]=r[pos1] - r[pos2];
+            rij[1]=r[pos1+1] - r[pos2+1];
+            rij[2]=r[pos1+2] - r[pos2+2];
             rSqd = rij[0]*rij[0]+rij[1]*rij[1]+rij[2]*rij[2];
 
             rSqd3 = rSqd*rSqd*rSqd;
@@ -297,8 +297,8 @@ void computeAccelerations() {
             for (k = 0; k < 3; k++) {
                 //  from F = ma, where m = 1 in natural units!
                 auxrij= rij[k] * f;
-                a[aux1+k] += auxrij;
-                a[aux2+k] -= auxrij;
+                a[pos1+k] += auxrij;
+                a[pos2+k] -= auxrij;
             }
         }
     }
@@ -311,6 +311,7 @@ double VelocityVerlet(double dt, FILE *fp) {
     int i;
     double psum = 0., temp, dt1 = 0.5 * dt;
 
+    //  Update positions and velocity with current velocity and acceleration
     for (i=0; i<N*3; i++) {
         temp = a[i] * dt1;
         r[i] += (v[i]+temp)*dt;
@@ -318,7 +319,7 @@ double VelocityVerlet(double dt, FILE *fp) {
     }
 
     //  Update accellerations from updated positions
-    computeAccelerations();
+    computeAccelerationsPotential();
 
     //  Update velocity with updated acceleration
     for (i=0; i<N*3; i++) {
