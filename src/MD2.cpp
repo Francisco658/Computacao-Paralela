@@ -79,11 +79,12 @@ double gaussdist();
 //  Initialize velocities according to user-supplied initial Temperature (Tinit)
 void initializeVelocities();
 //  Compute total potential energy from particle coordinates
-double Potential();
+// double Potential();
 //  Compute mean squared velocity from particle velocities
-double MeanSquaredVelocity();
 //  Compute total kinetic energy from particle mass and velocities
-double Kinetic();
+double MeanSquaredVelocityKinetic();
+//  Compute total kinetic energy from particle mass and velocities
+// double Kinetic();
 
 int main()
 {
@@ -280,8 +281,8 @@ int main()
         //  Instantaneous mean velocity squared, Temperature, Pressure
         //  Potential, and Kinetic Energy
         //  We would also like to use the IGL to try to see if we can extract the gas constant
-        mvs = MeanSquaredVelocity();
-        KE = Kinetic();
+        mvs = MeanSquaredVelocityKinetic()/N;
+        KE = MeanSquaredVelocityKinetic()*0.5;
         //PE = Potential();
         
         // Temperature from Kinetic Theory
@@ -383,50 +384,33 @@ void initialize() {
 
 
 //  Function to calculate the averaged velocity squared
-double MeanSquaredVelocity() { 
+double MeanSquaredVelocityKinetic() { 
     
-    double vx2 = 0;
-    double vy2 = 0;
-    double vz2 = 0;
-    double v2;
+    double v2 = 0;
     
     for (int i=0; i<N*3; i++) {
         
-        vx2 = vx2 + v[i]*v[i];
-        vy2 = vy2 + v[i]*v[i];
-        vz2 = vz2 + v[i]*v[i];
+        v2 += v[i]*v[i];
         
     }
-    v2 = (vx2+vy2+vz2)/N;
-    
     
     //printf("  Average of x-component of velocity squared is %f\n",v2);
     return v2;
 }
 
 //  Function to calculate the kinetic energy of the system
-double Kinetic() { //Write Function here!  
+/*double Kinetic() { //Write Function here!  
     
-    double v2, kin, value0, value1, value2;
+    double kin = 0.;
     
-    kin =0.;
     for (int i=0; i<N*3; i++) {
-        
-        v2 = 0.;
-
-        value0 = v[i]*v[i];
-        value1 = v[i]*v[i];
-        value2 = v[i]*v[i];
-        v2 = value0 + value1 + value2;
-            
-        kin += v2;
-        
+        kin += v[i]*v[i];
     }
     
     //printf("  Total Kinetic Energy is %f\n",N*mvs*m/2.);
     return kin*0.5;
     
-}
+}*/
 
 
 // Function to calculate the potential energy of the system
