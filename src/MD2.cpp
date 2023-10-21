@@ -465,9 +465,9 @@ void computeAccelerations() {
     }
 
     for (i = 0; i < N-1; i++) {   // loop over all distinct pairs i,j
+        aux1 = i*3;
         for (j = i+1; j < N; j++) {
             // initialize r^2 to zero
-            aux1 = i*3;
             aux2 = j*3;
             rSqd = 0;
             rij[0]=r[aux1] - r[aux2];
@@ -483,7 +483,7 @@ void computeAccelerations() {
             Pot+=((1-rSqd3)/(rSqd6));
             
             //  From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
-            f = 24 * ((2 - rSqd3)/(rSqd6*rSqd));
+            f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
 
             // Use temporary variables for a[i] and a[j]
             /*double ai[3];
