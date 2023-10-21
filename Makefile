@@ -1,10 +1,10 @@
 CC = gcc
 SRC = src/
-CFLAGS = -Wall -pg -ftree-vectorize -O2 -msse4 -mavx
+CFLAGS = -Wall -pg -ftree-vectorize -O2 -msse4
 
 .DEFAULT_GOAL = MD.exe
 
-teste:
+srun:
 	$(CC) $(CFLAGS) $(SRC)MD.cpp -lm -o MD.exe
 	srun --partition=cpar perf stat -e cache-references,cache-misses -M cpi ./MD.exe < inputdata.txt
 
