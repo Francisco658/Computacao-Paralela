@@ -1,39 +1,34 @@
 CC = gcc
 SRC = src/
-CFLAGSO2 = -pg -ftree-vectorize -O2 -msse4 -mavx
-CFLAGSO3 = -pg -ftree-vectorize -O3 -msse4 -mavx
+CFLAGSO2 = -pg -ftree-vectorize -O2
+CFLAGSO3 = -pg -ftree-vectorize -O3
+CFLAGSGPROF = -pg -O2 -ftree-vectorize
 
 .DEFAULT_GOAL = all
 
-all : MDseqO2.exe MDseqO3.exe MDpar02.exe MDpar03.exe
+all : MDseq.exe MDpar.exe
 
-MDseqO2.exe: $(SRC)/MDseq.cpp
-		module load gcc/11.2.0;
-		$(CC) $(CFLAGSO2) $(SRC)MDseq.cpp -lm -o MDseq.exe
+MDseq.exe: $(SRC)/MDseq.cpp
+        module load gcc/11.2.0;
+        $(CC) $(CFLAGSO2) $(SRC)MDseq.cpp -lm -o MDseq.exe
+        srun --partition=cpar perf stat -e cache-references,cache-misses -M cpi ./MDseq.exe < inputdata.txt
 
-MDseqO3.exe: $(SRC)/MDseq.cpp
-		module load gcc/11.2.0;
-		$(CC) $(CFLAGSO3) $(SRC)MDseq.cpp -lm -o MDseq.exe
+MDpar.exe: $(SRC)/MDpar.cpp
+        module load gcc/11.2.0;
+        $(CC) $(CFLAGSO2) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe -lstdc++
+        srun --partition=cpar perf stat -e cache-references,cache-misses -M cpi ./MDpar.exe < inputdata.txt
 
-MDparO2.exe: $(SRC)/MDpar.cpp
-		module load gcc/11.2.0;
-		$(CC) $(CFLAGSO2) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe
+gprof:
+        $(CC) $(CFLAGSGPROF) $(SRC)MDseq.cpp -lm -o MDseq.exe
+        ./MDseq.exe < inputdata.txt
+        gprof MDseq.exe gmon.out > gprof.txt
+        cat gprof.txt
 
-MDparO3.exe: $(SRC)/MDpar.cpp
-		module load gcc/11.2.0;
-		$(CC) $(CFLAGSO3) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe
+runseq:
+        ./MDseq.exe < inputdata.txt
 
-runseqO2:
-	  ./MDseqO2.exe < inputdata.txt
-
-runseqO3:
-	  ./MDseqO2.exe < inputdata.txt
-
-runparO2:
-	  ./MDparO3.exe < inputdata.txt
-
-runparO3:
-	  ./MDparO3.exe < inputdata.txt
+runpar:
+        ./MDpar.exe < inputdata.txt
 
 clean:
-	find . -type f \( ! -path "./src/*" ! -name "Makefile" ! -name "inputdata.txt" \) -exec rm -v {} \;
+        find . -type f \( ! -path "./src/*" ! -name "Makefile" ! -name "inputdata.txt" \) -exec rm -v {} \;
