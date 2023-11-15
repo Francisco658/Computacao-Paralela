@@ -15,8 +15,9 @@ MDseq.exe: $(SRC)/MDseq.cpp
 
 MDpar.exe: $(SRC)/MDpar.cpp
         module load gcc/11.2.0;
+        OMP_NUM_THREADS=16
         $(CC) $(CFLAGSO2) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe -lstdc++
-        srun --partition=cpar perf stat -e cache-references,cache-misses -M cpi ./MDpar.exe < inputdata.txt
+        srun --partition=cpar --cpus-per-task=16 perf stat -e cache-references,cache-misses -M cpi ./MDpar.exe < inputdata.txt
 
 gprof:
         $(CC) $(CFLAGSGPROF) $(SRC)MDseq.cpp -lm -o MDseq.exe
