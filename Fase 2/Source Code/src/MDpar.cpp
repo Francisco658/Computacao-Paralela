@@ -253,16 +253,54 @@ void initialize() {
     initializeVelocities();
 }
 
+// void initialize() {
+//     int n, p, i, j, k;
+//     double pos;
+
+//     // Number of atoms in each direction
+//     n = int(ceil(cbrt(N)));
+    
+//     // Spacing between atoms along a given direction
+//     pos = L / n;
+
+//     // Index for the number of particles assigned positions
+//     p = 0;
+//     double xPos, yPos, halfPos;
+//     halfPos = 0.5 * pos;
+
+//     // Initialize positions with improved structure for potential vectorization
+//     for (i = 0; i < n; i++) {
+//         xPos = i * pos + halfPos;
+
+//         for (j = 0; j < n; j++) {
+//             yPos = j * pos + halfPos;
+
+//             for (k = 0; k < n; k += 2) {
+//                 // Check if p is less than N*3 before updating r[p++]
+//                 r[p] = xPos;
+//                 r[p + 1] = yPos;
+//                 r[p + 2] = k * pos + halfPos;
+//                 r[p + 3] = xPos;
+//                 r[p + 4] = yPos;
+//                 r[p + 5] = (k + 1) * pos + halfPos;
+//                 p += 6;
+//             }
+//         }
+//     }
+
+//     // Call function to initialize velocities
+//     initializeVelocities();
+// }
+
 
 //  Function to calculate the averaged velocity squared
-double MeanSquaredVelocityKinetic() { 
-    
+double MeanSquaredVelocityKinetic() {
     double v2 = 0;
-    
-    for (int i=0; i<N*3; i++) {
-        v2 += v[i]*v[i];
+
+    for (int i = 0; i < N * 3; i += 5) {
+        v2 += v[i] * v[i] + v[i + 1] * v[i + 1] + v[i + 2] * v[i + 2] + v[i + 3] * v[i + 3] + v[i + 4] * v[i + 4];
     }
-    
+
     return v2;
 }
 
@@ -270,140 +308,88 @@ double MeanSquaredVelocityKinetic() {
 //   the forces on each atom.  Then uses a = F/m to calculate the
 //   accelleration of each atom. 
 void computeAccelerationsPotential() {
-    
-    double Pot = 0.;
+
+    double Pot=0., f, rSqd, rSqd3, rSqd6, auxrij;
     double rij[3]; // position of i relative to j
-    
-    #pragma omp parallel for
-    for (int i = 0; i < N*3; i++) {  // set all accelerations to zero
+
+    for (int i = 0; i < N*3; i += 5) {  // set all accelerations to zero
         a[i] = 0;
+        a[i + 1] = 0;
+        a[i + 2] = 0;
+        a[i + 3] = 0;
+        a[i + 4] = 0;
     }
 
-    #pragma omp parallel for reduction (+:Pot)
-    for (int i = 0; i < N-1; i++) {   // loop over all distinct pairs i,j
+    #pragma omp parallel for reduction(+:Pot) private(f, rSqd, rSqd3, rSqd6, auxrij, rij)
+    for (int i = 0; i < N-1; i++) {   
         int pos1 = i*3;
         for (int j = i+1; j < N; j++) {
             int pos2 = j*3;
-            double rSqd = 0;
-            rij[0]=r[pos1] - r[pos2];
-            rij[1]=r[pos1+1] - r[pos2+1];
-            rij[2]=r[pos1+2] - r[pos2+2];
-            rSqd = rij[0]*rij[0]+rij[1]*rij[1]+rij[2]*rij[2];
+            rSqd = 0;
 
-            double rSqd3 = rSqd*rSqd*rSqd;
-            double rSqd6 = rSqd3*rSqd3;
+            rij[0] = r[pos1] - r[pos2];
+            rij[1] = r[pos1+1] - r[pos2+1];
+            rij[2] = r[pos1+2] - r[pos2+2];
+
+            rSqd = rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2];
+
+            rSqd3 = rSqd*rSqd*rSqd;
+            rSqd6=rSqd3*rSqd3;
             Pot+=((1-rSqd3)/(rSqd6));
             
-            //  From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
-            double f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
+            f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
 
-            for (int k = 0; k < 3; k++) {
-                //  from F = ma, where m = 1 in natural units!
-                double auxrij= rij[k] * f;
-                a[pos1+k] += auxrij;
-                a[pos2+k] -= auxrij;
-            }
+            auxrij = rij[0] * f;
+            a[pos1+0] += auxrij;
+            a[pos2+0] -= auxrij;
+
+            auxrij = rij[1] * f;            
+            a[pos1+1] += auxrij;
+            a[pos2+1] -= auxrij;
+
+            auxrij = rij[2] * f;
+            a[pos1+2] += auxrij;
+            a[pos2+2] -= auxrij;
         }
     }
     PE = Pot*8;
 }
 
-// void computeAccelerationsPotential() {
-//     double Pot=0.;
-//     int i;
-    
-
-//     //vectorized
-//     #pragma omp parallel for
-//     for (i = 0; i < N*3; i++) {  // set all accelerations to zero
-//         a[i] = 0;
-//     }
-    
-//     #pragma omp parallel for reduction(+:Pot)
-//     for (i = 0; i < N-1; i++) {   // loop over all distinct pairs i,j
-        
-//         int j;
-//         double auxx=0,auxy=0,auxz=0;
-//         int aux1 = i*3;
-//         for (j = i+1; j < N; j++) {
-//             double f, rSqd,rSqd3,rSqd6;
-//             int aux2;  
-//             double rij[3]; // position of i relative to j
-//             double auxrij1,auxrij2,auxrij3;
-//             aux2 = j*3;
-//             rij[0]=r[aux1] - r[aux2];
-//             rij[1]=r[aux1+1] - r[aux2+1];
-//             rij[2]=r[aux1+2] - r[aux2+2];
-//             rSqd = rij[0]*rij[0]+rij[1]*rij[1]+rij[2]*rij[2];
-
-//             //i removed epsilon since it is always 1. and it never changes value throughout the code
-//             //evoking functions many times is bad, removing pow was the biggest performance boost
-//             //we did some math to remove the square root and we used multiplications instead of calling the pow function
-//             rSqd3 = rSqd*rSqd*rSqd;
-//             rSqd6=rSqd3*rSqd3;
-//             Pot+=((1-rSqd3)/(rSqd6));
-//             //  From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
-//             f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
-            
-//             auxrij1= rij[0] * f;
-//             auxrij2= rij[1] * f;
-//             auxrij3= rij[2] * f;
-//             auxx+=auxrij1;
-//             auxy+=auxrij2;
-//             auxz+=auxrij3;
-//             #pragma omp atomic
-//             a[aux2] -= auxrij1;
-//             #pragma omp atomic
-//             a[aux2+1] -= auxrij2;
-//             #pragma omp atomic
-//             a[aux2+2] -= auxrij3;
-//         }
-//         #pragma omp atomic
-//         a[aux1] += auxx;
-//         #pragma omp atomic
-//         a[aux1+1] += auxy;
-//         #pragma omp atomic
-//         a[aux1+2] += auxz;
-
-//     }
-
-//      //since we know we are working with 
-//     //since all the results are multiplied by 4 in the start, we just multiply the final result by 4
-//     // 4 * 2 = 8
-//     PE = Pot*8;
-// }
-
-
-// returns sum of dv/dt*m/A (aka Pressure) from elastic collisions with walls
 double VelocityVerlet(double dt, FILE *fp) {
-    
     int i;
-    double psum = 0., temp, dt1 = 0.5 * dt;
+    double psum = 0., temp1, temp2, dt1 = 0.5 * dt;
 
-    //  Update positions and velocity with current velocity and acceleration
-    for (i=0; i<N*3; i++) {
-        temp = a[i] * dt1;
-        r[i] += (v[i]+temp)*dt;
-        v[i] += temp;
+    for (i = 0; i < N * 3; i += 2) {
+        temp1 = a[i] * dt1;
+        r[i] += (v[i] + temp1) * dt;
+        v[i] += temp1;
+
+        temp2 = a[i + 1] * dt1;
+        r[i + 1] += (v[i + 1] + temp2) * dt;
+        v[i + 1] += temp2;
+
+        psum += fabs(v[i]) + fabs(v[i + 1]);
     }
 
-    //  Update accellerations from updated positions
     computeAccelerationsPotential();
 
-    //  Update velocity with updated acceleration
-    for (i=0; i<N*3; i++) {
-        v[i] += a[i]*dt1;
+    for (i = 0; i < N * 3; i += 2) {
+        v[i] += a[i] * dt1;
+        v[i + 1] += a[i + 1] * dt1;
     }
-    
+
     // Elastic walls
-    for (i=0; i<N*3; i++) {
-        if (r[i]<0. || r[i]>=L) {
-            v[i] *=-1.;
-            psum += fabs(v[i]);
+    for (i = 0; i < N * 3; i += 2) {
+        if (r[i] < 0. || r[i] >= L) {
+            v[i] *= -1.;
+        }
+
+        if (r[i + 1] < 0. || r[i + 1] >= L) {
+            v[i + 1] *= -1.;
         }
     }
-    
-    return psum/(3*L*L*dt);
+
+    return psum / (3 * L * L * dt);
 }
 
 void initializeVelocities() {
@@ -413,41 +399,37 @@ void initializeVelocities() {
     double vSqdSum=0.;
     double lambda;
     
-    for (i=0; i<N*3; i++) {
+    for (int i=0; i < N*3; i += 2) {
         //  Pull a number from a Gaussian Distribution
         v[i] = gaussdist();
+        v[i+1] = gaussdist();
     }
     
-    // Vcm = sum_i^N  m*v_i/  sum_i^N  M
-    // Compute center-of-mas velocity according to the formula above
-    for (i=0; i<N; i++) {
-        for (j=0; j<3; j++) {
-            vCM[j] += v[i*3+j];
-        }
+    for (int i=0; i<N; i++) {
+        vCM[0] += v[i*3+0];
+        vCM[1] += v[i*3+1];
+        vCM[2] += v[i*3+2];
     }
+
+    vCM[0] /= N;
+    vCM[1] /= N;
+    vCM[2] /= N;
     
-    for (i=0; i<3; i++) vCM[i] /= N;
-    
-    //  Subtract out the center-of-mass velocity from the
-    //  velocity of each particle... effectively set the
-    //  center of mass velocity to zero so that the system does
-    //  not drift in space!
-    for (i=0; i<N; i++) {
-        for (j=0; j<3; j++) {
-            v[i*3+j] -= vCM[j];
-        }
+    for (int i=0; i<N; i++) {
+        v[i*3+0] -= vCM[0];
+        v[i*3+1] -= vCM[1];
+        v[i*3+2] -= vCM[2];
     }
-    
-    //  Now we want to scale the average velocity of the system
-    //  by a factor which is consistent with our initial temperature, Tinit
-    for (i=0; i<N*3; i++) {
-            vSqdSum += v[i]*v[i];
+
+    for (int i = 0; i < N * 3; i += 5) {
+        vSqdSum += v[i] * v[i] + v[i + 1] * v[i + 1] + v[i + 2] * v[i + 2] + v[i + 3] * v[i + 3] + v[i + 4] * v[i + 4];
     }
     
     lambda = sqrt( 3*(N-1)*Tinit/vSqdSum);
     
-    for (i=0; i<N*3; i++) {
+    for (i=0; i<N*3; i +=2) {
         v[i] *= lambda;
+        v[i+1] *= lambda;
     }
 }
 
