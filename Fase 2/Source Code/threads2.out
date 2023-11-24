@@ -1,0 +1,1480 @@
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,476.93 msec task-clock                #   15.886 CPUs utilized          
+               106      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,357      page-faults               #    0.070 K/sec                  
+    83,689,250,244      cycles                    #    2.500 GHz                    
+    46,713,038,437      stalled-cycles-frontend   #   55.82% frontend cycles idle   
+   148,850,148,260      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,171,274      branches                  #  244.173 M/sec                  
+         2,024,107      branch-misses             #    0.02% of all branches        
+
+       2.107387367 seconds time elapsed
+
+      33.451444000 seconds user
+       0.026979000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,448.74 msec task-clock                #   15.916 CPUs utilized          
+                85      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,371      page-faults               #    0.071 K/sec                  
+    83,619,079,339      cycles                    #    2.500 GHz                    
+    46,640,403,857      stalled-cycles-frontend   #   55.78% frontend cycles idle   
+   148,853,054,023      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,763,699      branches                  #  244.397 M/sec                  
+         1,996,721      branch-misses             #    0.02% of all branches        
+
+       2.101574297 seconds time elapsed
+
+      33.444455000 seconds user
+       0.005598000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,451.80 msec task-clock                #   15.918 CPUs utilized          
+                82      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,393      page-faults               #    0.072 K/sec                  
+    83,626,699,687      cycles                    #    2.500 GHz                    
+    46,659,054,019      stalled-cycles-frontend   #   55.79% frontend cycles idle   
+   148,844,355,103      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,172,939,779      branches                  #  244.320 M/sec                  
+         1,991,855      branch-misses             #    0.02% of all branches        
+
+       2.101541401 seconds time elapsed
+
+      33.449394000 seconds user
+       0.003812000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,457.51 msec task-clock                #   15.918 CPUs utilized          
+                78      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,360      page-faults               #    0.071 K/sec                  
+    83,641,059,139      cycles                    #    2.500 GHz                    
+    46,664,534,411      stalled-cycles-frontend   #   55.79% frontend cycles idle   
+   148,851,318,225      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,540,123      branches                  #  244.326 M/sec                  
+         1,993,192      branch-misses             #    0.02% of all branches        
+
+       2.101868352 seconds time elapsed
+
+      33.446769000 seconds user
+       0.011999000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,433.51 msec task-clock                #   15.919 CPUs utilized          
+                90      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,402      page-faults               #    0.072 K/sec                  
+    83,580,998,396      cycles                    #    2.500 GHz                    
+    46,609,264,222      stalled-cycles-frontend   #   55.77% frontend cycles idle   
+   148,846,830,345      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,173,198,748      branches                  #  244.461 M/sec                  
+         1,997,484      branch-misses             #    0.02% of all branches        
+
+       2.100201023 seconds time elapsed
+
+      33.414654000 seconds user
+       0.020171000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,466.13 msec task-clock                #   15.907 CPUs utilized          
+               104      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,380      page-faults               #    0.071 K/sec                  
+    83,662,401,366      cycles                    #    2.500 GHz                    
+    46,665,888,260      stalled-cycles-frontend   #   55.78% frontend cycles idle   
+   148,868,063,784      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,178,365,587      branches                  #  244.377 M/sec                  
+         2,022,050      branch-misses             #    0.02% of all branches        
+
+       2.103840212 seconds time elapsed
+
+      33.460434000 seconds user
+       0.007244000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,476.25 msec task-clock                #   15.916 CPUs utilized          
+                76      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,352      page-faults               #    0.070 K/sec                  
+    83,687,944,011      cycles                    #    2.500 GHz                    
+    46,703,916,371      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,858,206,380      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,175,986,370      branches                  #  244.232 M/sec                  
+         2,022,077      branch-misses             #    0.02% of all branches        
+
+       2.103301929 seconds time elapsed
+
+      33.469049000 seconds user
+       0.008467000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,477.46 msec task-clock                #   15.915 CPUs utilized          
+                84      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,369      page-faults               #    0.071 K/sec                  
+    83,690,859,585      cycles                    #    2.500 GHz                    
+    46,704,068,295      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,857,683,573      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,175,628,845      branches                  #  244.213 M/sec                  
+         2,002,926      branch-misses             #    0.02% of all branches        
+
+       2.103533595 seconds time elapsed
+
+      33.470656000 seconds user
+       0.008181000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,448.51 msec task-clock                #   15.674 CPUs utilized          
+                87      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,380      page-faults               #    0.071 K/sec                  
+    83,618,480,025      cycles                    #    2.500 GHz                    
+    46,643,269,488      stalled-cycles-frontend   #   55.78% frontend cycles idle   
+   148,849,187,812      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,173,898,211      branches                  #  244.373 M/sec                  
+         1,996,843      branch-misses             #    0.02% of all branches        
+
+       2.134039053 seconds time elapsed
+
+      33.444339000 seconds user
+       0.005564000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,403.09 msec task-clock                #   15.916 CPUs utilized          
+                90      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,454      page-faults               #    0.073 K/sec                  
+    83,504,881,687      cycles                    #    2.500 GHz                    
+    46,548,239,289      stalled-cycles-frontend   #   55.74% frontend cycles idle   
+   148,831,406,669      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,169,431,395      branches                  #  244.571 M/sec                  
+         1,996,194      branch-misses             #    0.02% of all branches        
+
+       2.098745071 seconds time elapsed
+
+      33.396845000 seconds user
+       0.007605000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,500.86 msec task-clock                #   15.919 CPUs utilized          
+                75      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,387      page-faults               #    0.071 K/sec                  
+    83,749,335,197      cycles                    #    2.500 GHz                    
+    46,752,083,791      stalled-cycles-frontend   #   55.82% frontend cycles idle   
+   148,869,008,389      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,178,504,986      branches                  #  244.128 M/sec                  
+         1,996,412      branch-misses             #    0.02% of all branches        
+
+       2.104436059 seconds time elapsed
+
+      33.497392000 seconds user
+       0.004731000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,495.19 msec task-clock                #   15.916 CPUs utilized          
+                87      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,378      page-faults               #    0.071 K/sec                  
+    83,735,183,148      cycles                    #    2.500 GHz                    
+    46,737,770,988      stalled-cycles-frontend   #   55.82% frontend cycles idle   
+   148,867,246,875      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,177,957,997      branches                  #  244.153 M/sec                  
+         2,002,570      branch-misses             #    0.02% of all branches        
+
+       2.104560447 seconds time elapsed
+
+      33.491835000 seconds user
+       0.004716000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,469.06 msec task-clock                #   15.918 CPUs utilized          
+                80      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,338      page-faults               #    0.070 K/sec                  
+    83,669,931,109      cycles                    #    2.500 GHz                    
+    46,671,123,340      stalled-cycles-frontend   #   55.78% frontend cycles idle   
+   148,868,528,911      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,178,291,402      branches                  #  244.354 M/sec                  
+         2,001,260      branch-misses             #    0.02% of all branches        
+
+       2.102577997 seconds time elapsed
+
+      33.465299000 seconds user
+       0.005081000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,489.79 msec task-clock                #    1.043 CPUs utilized          
+               108      context-switches          #    0.003 K/sec                  
+                22      cpu-migrations            #    0.001 K/sec                  
+             2,095      page-faults               #    0.063 K/sec                  
+    83,721,534,186      cycles                    #    2.500 GHz                    
+    46,735,010,865      stalled-cycles-frontend   #   55.82% frontend cycles idle   
+   148,862,173,863      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,175,950,500      branches                  #  244.133 M/sec                  
+         2,029,311      branch-misses             #    0.02% of all branches        
+
+      32.114918826 seconds time elapsed
+
+      33.472025000 seconds user
+       0.018356000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,502.88 msec task-clock                #   15.898 CPUs utilized          
+               114      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             1,717      page-faults               #    0.051 K/sec                  
+    83,754,245,595      cycles                    #    2.500 GHz                    
+    46,757,420,842      stalled-cycles-frontend   #   55.83% frontend cycles idle   
+   148,864,514,253      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,177,115,015      branches                  #  244.072 M/sec                  
+         1,999,975      branch-misses             #    0.02% of all branches        
+
+       2.107327079 seconds time elapsed
+
+      33.499051000 seconds user
+       0.005459000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,467.93 msec task-clock                #   15.916 CPUs utilized          
+                91      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,370      page-faults               #    0.071 K/sec                  
+    83,666,961,513      cycles                    #    2.500 GHz                    
+    46,670,760,881      stalled-cycles-frontend   #   55.78% frontend cycles idle   
+   148,869,360,430      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,178,748,046      branches                  #  244.376 M/sec                  
+         2,007,691      branch-misses             #    0.02% of all branches        
+
+       2.102815052 seconds time elapsed
+
+      33.464422000 seconds user
+       0.004957000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,471.89 msec task-clock                #   15.917 CPUs utilized          
+                85      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,363      page-faults               #    0.071 K/sec                  
+    83,676,915,043      cycles                    #    2.500 GHz                    
+    46,687,195,168      stalled-cycles-frontend   #   55.79% frontend cycles idle   
+   148,861,779,465      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,176,611,814      branches                  #  244.283 M/sec                  
+         2,000,000      branch-misses             #    0.02% of all branches        
+
+       2.102867535 seconds time elapsed
+
+      33.463801000 seconds user
+       0.009449000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,476.33 msec task-clock                #   15.922 CPUs utilized          
+                81      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,371      page-faults               #    0.071 K/sec                  
+    83,688,029,861      cycles                    #    2.500 GHz                    
+    46,687,845,270      stalled-cycles-frontend   #   55.79% frontend cycles idle   
+   148,867,587,949      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,177,919,061      branches                  #  244.290 M/sec                  
+         1,997,369      branch-misses             #    0.02% of all branches        
+
+       2.102511336 seconds time elapsed
+
+      33.471838000 seconds user
+       0.005703000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,493.32 msec task-clock                #   15.914 CPUs utilized          
+                79      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,392      page-faults               #    0.071 K/sec                  
+    83,730,580,481      cycles                    #    2.500 GHz                    
+    46,739,255,186      stalled-cycles-frontend   #   55.82% frontend cycles idle   
+   148,862,026,885      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,176,618,744      branches                  #  244.127 M/sec                  
+         1,993,606      branch-misses             #    0.02% of all branches        
+
+       2.104610874 seconds time elapsed
+
+      33.471908000 seconds user
+       0.022753000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,481.86 msec task-clock                #   15.920 CPUs utilized          
+                80      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,394      page-faults               #    0.072 K/sec                  
+    83,701,941,567      cycles                    #    2.500 GHz                    
+    46,715,667,334      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,853,628,800      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,253,589      branches                  #  244.140 M/sec                  
+         1,985,586      branch-misses             #    0.02% of all branches        
+
+       2.103153535 seconds time elapsed
+
+      33.476629000 seconds user
+       0.006506000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,487.28 msec task-clock                #   15.839 CPUs utilized          
+                86      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,384      page-faults               #    0.071 K/sec                  
+    83,715,411,636      cycles                    #    2.500 GHz                    
+    46,719,786,678      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,866,251,886      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,177,759,885      branches                  #  244.205 M/sec                  
+         1,991,713      branch-misses             #    0.02% of all branches        
+
+       2.114266653 seconds time elapsed
+
+      33.480915000 seconds user
+       0.007686000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,484.49 msec task-clock                #   15.922 CPUs utilized          
+                86      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,413      page-faults               #    0.072 K/sec                  
+    83,708,405,313      cycles                    #    2.500 GHz                    
+    46,720,325,005      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,859,387,931      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,175,929,732      branches                  #  244.171 M/sec                  
+         1,997,222      branch-misses             #    0.02% of all branches        
+
+       2.103000120 seconds time elapsed
+
+      33.479268000 seconds user
+       0.006579000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,444.49 msec task-clock                #   15.917 CPUs utilized          
+                73      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,342      page-faults               #    0.070 K/sec                  
+    83,608,571,293      cycles                    #    2.500 GHz                    
+    46,630,693,715      stalled-cycles-frontend   #   55.77% frontend cycles idle   
+   148,850,037,066      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,173,841,836      branches                  #  244.400 M/sec                  
+         1,993,852      branch-misses             #    0.02% of all branches        
+
+       2.101224063 seconds time elapsed
+
+      33.418557000 seconds user
+       0.027146000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,440.27 msec task-clock                #   15.917 CPUs utilized          
+                86      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,368      page-faults               #    0.071 K/sec                  
+    83,597,925,917      cycles                    #    2.500 GHz                    
+    46,617,362,987      stalled-cycles-frontend   #   55.76% frontend cycles idle   
+   148,852,086,908      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,218,344      branches                  #  244.442 M/sec                  
+         1,995,892      branch-misses             #    0.02% of all branches        
+
+       2.100851203 seconds time elapsed
+
+      33.438815000 seconds user
+       0.002697000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,482.81 msec task-clock                #   15.921 CPUs utilized          
+                76      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,364      page-faults               #    0.071 K/sec                  
+    83,704,323,787      cycles                    #    2.500 GHz                    
+    46,697,635,008      stalled-cycles-frontend   #   55.79% frontend cycles idle   
+   148,877,135,615      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,180,610,636      branches                  #  244.323 M/sec                  
+         1,995,281      branch-misses             #    0.02% of all branches        
+
+       2.103110482 seconds time elapsed
+
+      33.472041000 seconds user
+       0.011994000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,528.55 msec task-clock                #   15.917 CPUs utilized          
+                87      context-switches          #    0.003 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             1,885      page-faults               #    0.056 K/sec                  
+    83,818,595,076      cycles                    #    2.500 GHz                    
+    46,816,963,420      stalled-cycles-frontend   #   55.86% frontend cycles idle   
+   148,872,849,644      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,179,548,117      branches                  #  243.958 M/sec                  
+         2,001,593      branch-misses             #    0.02% of all branches        
+
+       2.106423660 seconds time elapsed
+
+      33.512435000 seconds user
+       0.017481000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,491.81 msec task-clock                #   15.915 CPUs utilized          
+                77      context-switches          #    0.002 K/sec                  
+                19      cpu-migrations            #    0.001 K/sec                  
+             2,337      page-faults               #    0.070 K/sec                  
+    83,726,799,109      cycles                    #    2.500 GHz                    
+    46,724,181,322      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,873,724,903      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,179,814,797      branches                  #  244.233 M/sec                  
+         1,996,613      branch-misses             #    0.02% of all branches        
+
+       2.104475758 seconds time elapsed
+
+      33.484612000 seconds user
+       0.008482000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,356.03 msec task-clock                #    0.980 CPUs utilized          
+                95      context-switches          #    0.003 K/sec                  
+                20      cpu-migrations            #    0.001 K/sec                  
+             2,373      page-faults               #    0.071 K/sec                  
+    83,387,254,974      cycles                    #    2.500 GHz                    
+    46,383,222,795      stalled-cycles-frontend   #   55.62% frontend cycles idle   
+   148,876,105,168      instructions              #    1.79  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,180,670,014      branches                  #  245.253 M/sec                  
+         2,024,124      branch-misses             #    0.02% of all branches        
+
+      34.033659009 seconds time elapsed
+
+      33.340719000 seconds user
+       0.017301000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,483.31 msec task-clock                #   15.905 CPUs utilized          
+               104      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,372      page-faults               #    0.071 K/sec                  
+    83,705,363,680      cycles                    #    2.500 GHz                    
+    46,706,685,292      stalled-cycles-frontend   #   55.80% frontend cycles idle   
+   148,870,146,079      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,178,702,383      branches                  #  244.262 M/sec                  
+         2,002,405      branch-misses             #    0.02% of all branches        
+
+       2.105165228 seconds time elapsed
+
+      33.463019000 seconds user
+       0.021744000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,497.54 msec task-clock                #   15.922 CPUs utilized          
+                76      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,374      page-faults               #    0.071 K/sec                  
+    83,741,171,528      cycles                    #    2.500 GHz                    
+    46,736,253,789      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,878,719,398      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,181,295,488      branches                  #  244.236 M/sec                  
+         1,993,693      branch-misses             #    0.02% of all branches        
+
+       2.103810581 seconds time elapsed
+
+      33.488525000 seconds user
+       0.010350000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,477.71 msec task-clock                #   15.923 CPUs utilized          
+                61      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             1,941      page-faults               #    0.058 K/sec                  
+    83,691,590,100      cycles                    #    2.500 GHz                    
+    46,706,637,959      stalled-cycles-frontend   #   55.81% frontend cycles idle   
+   148,853,381,081      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,264,900      branches                  #  244.170 M/sec                  
+         1,982,629      branch-misses             #    0.02% of all branches        
+
+       2.102528328 seconds time elapsed
+
+      33.465667000 seconds user
+       0.013249000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,455.22 msec task-clock                #   15.924 CPUs utilized          
+                75      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,359      page-faults               #    0.071 K/sec                  
+    83,635,356,735      cycles                    #    2.500 GHz                    
+    46,646,020,719      stalled-cycles-frontend   #   55.77% frontend cycles idle   
+   148,859,746,713      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,176,182,274      branches                  #  244.392 M/sec                  
+         2,003,453      branch-misses             #    0.02% of all branches        
+
+       2.100927081 seconds time elapsed
+
+      33.449421000 seconds user
+       0.007097000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,513.89 msec task-clock                #   15.919 CPUs utilized          
+                86      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,403      page-faults               #    0.072 K/sec                  
+    83,781,928,793      cycles                    #    2.500 GHz                    
+    46,777,470,257      stalled-cycles-frontend   #   55.83% frontend cycles idle   
+   148,878,525,380      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,181,215,365      branches                  #  244.114 M/sec                  
+         1,991,295      branch-misses             #    0.02% of all branches        
+
+       2.105253823 seconds time elapsed
+
+      33.488663000 seconds user
+       0.026529000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,503.80 msec task-clock                #   15.921 CPUs utilized          
+                83      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,430      page-faults               #    0.073 K/sec                  
+    83,756,750,062      cycles                    #    2.500 GHz                    
+    46,764,517,559      stalled-cycles-frontend   #   55.83% frontend cycles idle   
+   148,862,916,500      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,177,016,495      branches                  #  244.062 M/sec                  
+         1,999,312      branch-misses             #    0.02% of all branches        
+
+       2.104331644 seconds time elapsed
+
+      33.495718000 seconds user
+       0.009379000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,461.40 msec task-clock                #   15.907 CPUs utilized          
+                79      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,365      page-faults               #    0.071 K/sec                  
+    83,650,744,749      cycles                    #    2.500 GHz                    
+    46,661,052,197      stalled-cycles-frontend   #   55.78% frontend cycles idle   
+   148,860,074,034      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,176,104,426      branches                  #  244.344 M/sec                  
+         1,991,790      branch-misses             #    0.02% of all branches        
+
+       2.103527290 seconds time elapsed
+
+      33.454850000 seconds user
+       0.007856000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,445.90 msec task-clock                #   15.923 CPUs utilized          
+                77      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,358      page-faults               #    0.071 K/sec                  
+    83,612,031,605      cycles                    #    2.500 GHz                    
+    46,630,928,726      stalled-cycles-frontend   #   55.77% frontend cycles idle   
+   148,854,184,414      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,174,956,507      branches                  #  244.423 M/sec                  
+         1,987,257      branch-misses             #    0.02% of all branches        
+
+       2.100437051 seconds time elapsed
+
+      33.418935000 seconds user
+       0.028275000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,485.61 msec task-clock                #   15.924 CPUs utilized          
+                85      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,429      page-faults               #    0.073 K/sec                  
+    83,711,236,417      cycles                    #    2.500 GHz                    
+    46,708,823,255      stalled-cycles-frontend   #   55.80% frontend cycles idle   
+   148,877,103,774      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,180,891,708      branches                  #  244.311 M/sec                  
+         1,992,445      branch-misses             #    0.02% of all branches        
+
+       2.102896611 seconds time elapsed
+
+      33.481085000 seconds user
+       0.005834000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,436.61 msec task-clock                #   15.921 CPUs utilized          
+                93      context-switches          #    0.003 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,399      page-faults               #    0.072 K/sec                  
+    83,588,710,943      cycles                    #    2.500 GHz                    
+    46,598,602,462      stalled-cycles-frontend   #   55.75% frontend cycles idle   
+   148,864,900,963      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,177,887,230      branches                  #  244.579 M/sec                  
+         2,005,045      branch-misses             #    0.02% of all branches        
+
+       2.100202136 seconds time elapsed
+
+      33.431428000 seconds user
+       0.006503000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,532.37 msec task-clock                #   15.915 CPUs utilized          
+                83      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,371      page-faults               #    0.071 K/sec                  
+    83,828,168,532      cycles                    #    2.500 GHz                    
+    46,814,859,782      stalled-cycles-frontend   #   55.85% frontend cycles idle   
+   148,889,047,848      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,183,917,986      branches                  #  244.060 M/sec                  
+         2,008,522      branch-misses             #    0.02% of all branches        
+
+       2.106960649 seconds time elapsed
+
+      33.521127000 seconds user
+       0.012447000 seconds sys
+
+
+make[1]: Entering directory `/home/pg53597/TesteBessa/Source Code'
+./MDpar.exe < inputdata.txt
+
+  AVERAGE TEMPERATURE (K):                       131.45506
+
+  AVERAGE PRESSURE  (Pa):                  131001228.45076
+
+  PV/nT (J * mol^-1 K^-1):                        28.47279
+
+  PERCENT ERROR of pV/nT AND GAS CONSTANT:       242.44905
+
+  THE COMPRESSIBILITY (unitless):                  3.42449 
+
+  TOTAL VOLUME (m^3):                      2.37220e-25 
+
+  NUMBER OF PARTICLES (unitless):          5000 
+make[1]: Leaving directory `/home/pg53597/TesteBessa/Source Code'
+
+ Performance counter stats for 'make runpar2':
+
+         33,509.50 msec task-clock                #   15.916 CPUs utilized          
+                79      context-switches          #    0.002 K/sec                  
+                18      cpu-migrations            #    0.001 K/sec                  
+             2,154      page-faults               #    0.064 K/sec                  
+    83,770,997,387      cycles                    #    2.500 GHz                    
+    46,762,785,095      stalled-cycles-frontend   #   55.82% frontend cycles idle   
+   148,878,558,120      instructions              #    1.78  insn per cycle         
+                                                  #    0.31  stalled cycles per insn
+     8,180,972,438      branches                  #  244.139 M/sec                  
+         1,988,955      branch-misses             #    0.02% of all branches        
+
+       2.105389706 seconds time elapsed
+
+      33.495238000 seconds user
+       0.015499000 seconds sys
+
+

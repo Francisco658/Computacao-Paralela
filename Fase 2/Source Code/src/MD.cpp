@@ -2,10 +2,9 @@
 #include<stdlib.h>
 #include<math.h>
 #include<string.h>
-#include<omp.h>
 
 // Number of particles
-int N = 5000;
+int N = 2160;
 
 double PE;
 double NA = 6.022140857e23;
@@ -53,8 +52,6 @@ void initializeVelocities();
 double MeanSquaredVelocityKinetic();
 
 int main(){
-
-    omp_set_num_threads(16);
 
     int i, NumTime;
     double dt, Vol, Temp, Press, Pavg = 0, Tavg = 0, rho, VolFac, TempFac, PressFac, timefac, KE, mvs, gc, Z;
@@ -255,6 +252,7 @@ void initialize() {
     initializeVelocities();
 }
 
+
 //  Function to calculate the averaged velocity squared
 double MeanSquaredVelocityKinetic() { 
     
@@ -271,52 +269,41 @@ double MeanSquaredVelocityKinetic() {
 //   the forces on each atom.  Then uses a = F/m to calculate the
 //   accelleration of each atom. 
 void computeAccelerationsPotential() {
-    double Pot = 0.0;
+    int i, j, k, pos1, pos2;
+    double Pot=0., f, rSqd, rSqd3, rSqd6, auxrij;
     double rij[3]; // position of i relative to j
-
-    // Set all accelerations to zero
-    #pragma omp parallel for
-    for (int i = 0; i < N*3; i++) {
-        a[i] = 0.0;
+    
+    for (i = 0; i < N*3; i++) {  // set all accelerations to zero
+        a[i] = 0;
     }
 
-    int size = N*3;
-    // Calculate forces and update accelerations in parallel
-    #pragma omp parallel for schedule(runtime) reduction(+:Pot, a[:size]) private(rij)
-    for (int i = 0; i < N-1; i++) {
-        int pos1 = i * 3;
+    for (i = 0; i < N-1; i++) {   // loop over all distinct pairs i,j
+        pos1 = i*3;
+        for (j = i+1; j < N; j++) {
+            pos2 = j*3;
+            rSqd = 0;
+            rij[0]=r[pos1] - r[pos2];
+            rij[1]=r[pos1+1] - r[pos2+1];
+            rij[2]=r[pos1+2] - r[pos2+2];
+            rSqd = rij[0]*rij[0]+rij[1]*rij[1]+rij[2]*rij[2];
 
-        for (int j = i + 1; j < N; j++) {
-            int pos2 = j * 3;
-            double rSqd = 0.0;
+            rSqd3 = rSqd*rSqd*rSqd;
+            rSqd6=rSqd3*rSqd3;
+            Pot+=((1-rSqd3)/(rSqd6));
+            
+            //  From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
+            f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
 
-            rij[0] = r[pos1] - r[pos2];
-            rij[1] = r[pos1+1] - r[pos2+1];
-            rij[2] = r[pos1+2] - r[pos2+2];
-
-            rSqd = rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2];
-
-            double rSqd3 = rSqd * rSqd * rSqd;
-            double rSqd6 = rSqd3 * rSqd3;
-            Pot += ((1 - rSqd3) / rSqd6);
-
-            // From derivative of Lennard-Jones with sigma and epsilon set equal to 1 in natural units!
-            double f = ((48 - 24 * rSqd3) / (rSqd6 * rSqd));
-
-            // Update accelerations
-            for (int k = 0; k < 3; k++) {
-                // From F = ma, where m = 1 in natural units!
-                double auxrij = rij[k] * f;
-                a[pos1 + k] += auxrij;
-                a[pos2 + k] -= auxrij;
+            for (k = 0; k < 3; k++) {
+                //  from F = ma, where m = 1 in natural units!
+                auxrij= rij[k] * f;
+                a[pos1+k] += auxrij;
+                a[pos2+k] -= auxrij;
             }
         }
     }
-
-    // Update potential energy
-    PE = Pot * 8.0;
+    PE = Pot*8;
 }
-
 
 // returns sum of dv/dt*m/A (aka Pressure) from elastic collisions with walls
 double VelocityVerlet(double dt, FILE *fp) {

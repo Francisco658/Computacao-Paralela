@@ -4,7 +4,7 @@
 #include<string.h>
 
 // Number of particles
-int N = 2160;
+int N = 5000;
 
 double PE;
 double NA = 6.022140857e23;
@@ -255,25 +255,25 @@ void initialize() {
 // void initialize() {
 //     int n, p, i, j, k;
 //     double pos;
-
+//
 //     // Number of atoms in each direction
 //     n = int(ceil(cbrt(N)));
-    
+//    
 //     // Spacing between atoms along a given direction
 //     pos = L / n;
-
+//
 //     // Index for the number of particles assigned positions
 //     p = 0;
 //     double xPos, yPos, halfPos;
 //     halfPos = 0.5 * pos;
-
+//
 //     // Initialize positions with improved structure for potential vectorization
 //     for (i = 0; i < n; i++) {
 //         xPos = i * pos + halfPos;
-
+//
 //         for (j = 0; j < n; j++) {
 //             yPos = j * pos + halfPos;
-
+//
 //             for (k = 0; k < n; k += 2) {
 //                 // Check if p is less than N*3 before updating r[p++]
 //                 r[p] = xPos;
@@ -286,11 +286,10 @@ void initialize() {
 //             }
 //         }
 //     }
-
+//
 //     // Call function to initialize velocities
 //     initializeVelocities();
 // }
-
 
 //  Function to calculate the averaged velocity squared
 double MeanSquaredVelocityKinetic() {

@@ -1,33 +1,29 @@
 CC = gcc
 SRC = src/
-CFLAGSO2 = -pg -ftree-vectorize -O2
-CFLAGSGPROF = -pg -O2 -ftree-vectorize
+CFLAGS = -pg -O2 -ftree-vectorize
 
 .DEFAULT_GOAL = all
 
-all : MDseq.exe MDpar.exe
+all: MDseq.exe MDpar.exe
 
 MDseq.exe: $(SRC)/MDseq.cpp
-	module load gcc/11.2.0;
-	$(CC) $(CFLAGSO2) $(SRC)MDseq.cpp -lm -o MDseq.exe
-	srun --partition=cpar perf stat -e cache-references,cache-misses -M cpi ./MDseq.exe < inputdata.txt
+	module load gcc/11.2.0;\
+	$(CC) $(CFLAGS) $(SRC)MDseq.cpp -lm -o MDseq.exe
 
 MDpar.exe: $(SRC)/MDpar.cpp
-	module load gcc/11.2.0;
-	$(CC) $(CFLAGSO2) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe 
-	srun --partition=cpar --cpus-per-task=4 perf stat -e cache-references,cache-misses -M cpi ./MDpar.exe < inputdata.txt
-
-gprof:
-	$(CC) $(CFLAGSGPROF) $(SRC)MDseq.cpp -lm -o MDseq.exe
-	./MDseq.exe < inputdata.txt
-	gprof MDseq.exe gmon.out > gprof.txt
-	cat gprof.txt
-
-runseq:
-	./MDseq.exe < inputdata.txt
-
-runpar:
-	./MDpar.exe < inputdata.txt
+	module load gcc/11.2.0;\
+	$(CC) $(CFLAGS) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe
+	sbatch test.sh
 
 clean:
-	find . -type f \( ! -path "./src/*" ! -name "Makefile" ! -name "inputdata.txt" \) -exec rm -v {} \;
+	find . -type f \( ! -path "./src/*" ! -name "Makefile" ! -name "threads.out" !  -name "threads2.out" ! -name "inputdata.txt" ! -name "test.sh" \) -exec rm -v {} \;
+
+runseq: MDseq.exe
+	./MDseq.exe < inputdata.txt
+
+runpar2: MDpar.exe
+	./MDpar.exe < inputdata.txt
+
+runpar: MDpar.exe
+	export OMP_NUM_THREADS=2;\
+	./MDpar.exe < inputdata.txt
