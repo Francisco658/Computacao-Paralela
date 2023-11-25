@@ -282,7 +282,7 @@ void computeAccelerationsPotential() {
 
     int size = N*3;
     // Calculate forces and update accelerations in parallel
-    #pragma omp parallel for schedule(runtime) reduction(+:Pot, a[:size]) private(rij)
+    #pragma omp parallel for schedule(dynamic) reduction(+:Pot, a[:size]) private(rij)
     for (int i = 0; i < N-1; i++) {
         int pos1 = i * 3;
 
