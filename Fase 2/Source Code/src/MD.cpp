@@ -4,7 +4,7 @@
 #include<string.h>
 
 // Number of particles
-int N = 2160;
+int N = 5000;
 
 double PE;
 double NA = 6.022140857e23;
