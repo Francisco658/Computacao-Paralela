@@ -392,7 +392,6 @@ double VelocityVerlet(double dt, FILE *fp) {
 
 void initializeVelocities() {
     
-    int i, j;
     double vCM[3] = {0, 0, 0};
     double vSqdSum=0.;
     double lambda;
@@ -425,7 +424,7 @@ void initializeVelocities() {
     
     lambda = sqrt( 3*(N-1)*Tinit/vSqdSum);
     
-    for (i=0; i<N*3; i +=2) {
+    for (int i=0; i<N*3; i +=2) {
         v[i] *= lambda;
         v[i+1] *= lambda;
     }
