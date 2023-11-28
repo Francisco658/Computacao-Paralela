@@ -15,7 +15,7 @@ MDseq.exe: $(SRC)/MDseq.cpp
 	$(CC) $(CFLAGS) $(SRC)MDseq.cpp -lm -o MDseq.exe
 
 MDpar.exe: $(SRC)/MDpar.cpp
-	module load gcc/11.2.0; \
+	module load gcc/11.2.0;\
 	$(CC) $(CFLAGS) $(SRC)MDpar.cpp -lm -fopenmp -o MDpar.exe
 	sbatch test.sh
 	
