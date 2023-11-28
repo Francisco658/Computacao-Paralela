@@ -309,22 +309,17 @@ double MeanSquaredVelocityKinetic() {
 void computeAccelerationsPotential() {
 
     double Pot=0.0;
-    //double rij[3]; // position of i relative to j
     int size = N * 3; 
 
     #pragma omp simd  
-    // #pragma omp parallel for simd  
     for (int i = 0; i < size; i++) {  // set all accelerations to zero
         a[i] = 0;
     }
 
-    // #pragma omp parallel for simd schedule(dynamic, 50) reduction(+:Pot, a[:size])
     #pragma omp parallel for schedule(dynamic, 50) reduction(+:a[:size], Pot)
     for (int i = 0; i < N-1; i++) {   
-        // double rij[3];
         int pos1 = i*3;
 
-        // #pragma omp parallel reduction(+:Pot)
         for (int j = i+1; j < N; j++) {
             double rij[3];
             int pos2 = j*3;
@@ -344,7 +339,6 @@ void computeAccelerationsPotential() {
 
             #pragma omp simd
             for (int k = 0; k < 3; k++) {
-                // From F = ma, where m = 1 in natural units!
                 double auxrij = rij[k] * f;
                 a[pos1 + k] += auxrij;
                 a[pos2 + k] -= auxrij;
