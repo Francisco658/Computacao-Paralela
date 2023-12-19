@@ -1,10 +1,14 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include<string.h>
+#include "./MDCuda.h"
 
 // Number of particles
 int N = 5000;
+
+// -------------  CUDA ---------------
+
+int NUM_THREADS_PER_BLOCK = 10;
+int NUM_BLOCKS_PER_PARTICLES = ((int) ceil((double) (N/NUM_THREADS_PER_BLOCK))) + 1;
+
+// -------------  CUDA ---------------
 
 double PE;
 double NA = 6.022140857e23;
@@ -21,9 +25,9 @@ const int MAXPART=5001;
 //  Position
 double* r = (double *) malloc(MAXPART*3*sizeof(double));
 //  Velocity
-double* v= (double *) malloc(MAXPART*3*sizeof(double));
+double* v = (double *) malloc(MAXPART*3*sizeof(double));
 //  Acceleration
-double* a= (double *) malloc(MAXPART*3*sizeof(double));
+double* a = (double *) malloc(MAXPART*3*sizeof(double));
 
 char *atype = (char *)malloc(3 * sizeof(char));
 
@@ -35,12 +39,12 @@ void initialize();
 //  update positions and velocities using Velocity Verlet algorithm 
 //  print particle coordinates to file for rendering via VMD or other animation software
 //  return 'instantaneous pressure'
-double VelocityVerlet(double dt, FILE *fp);  
+double VelocityVerlet(double dt, FILE *fp, int *d_N, double *d_PE, double *d_a, double *d_r);  
 
 //  Compute Force using F = -dV/dr
 //  solve F = ma for use in Velocity Verlet
 //  Compute total potential energy from particle coordinates
-void computeAccelerationsPotential();
+__global__ void computeAccelerationsPotential(int *d_N, double *d_PE, double *d_a, double *d_r);
 
 //  Numerical Recipes function for generation gaussian distribution
 double gaussdist();
@@ -52,6 +56,31 @@ void initializeVelocities();
 double MeanSquaredVelocityKinetic();
 
 int main(){
+
+    double aux = MAXPART * 3 * sizeof(double);
+
+    // -------------  CUDA ---------------
+    int *d_N;
+    double *d_r, *d_v, *d_a, *d_PE;
+
+    // Allocate the Memory on the Device
+    cudaMalloc((void**)&d_r, aux);
+    cudaMalloc((void**)&d_r, aux);
+    cudaMalloc((void**)&d_v, aux);
+    cudaMalloc((void**)&d_a, aux);
+    cudaMalloc((void**)&d_N, sizeof(int));
+    cudaMalloc((void**)&d_PE, sizeof(double));
+    checkCUDAError("Mem Allocation");
+
+    // Copy all working Data to Device
+    cudaMemcpy(d_a, a, aux, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_r, r, aux, cudaMemcpyHostToDevice);
+    // cudaMemcpy(d_v, v, aux, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_N, &N, sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_PE, &PE, sizeof(double), cudaMemcpyHostToDevice);
+    checkCUDAError("memcpy h->d");
+
+    // -------------  CUDA ---------------
 
     int i, NumTime;
     double dt, Vol, Temp, Press, Pavg = 0, Tavg = 0, rho, VolFac, TempFac, PressFac, timefac, KE, mvs, gc, Z;
@@ -164,14 +193,15 @@ int main(){
     }
 
     initialize();
-    computeAccelerationsPotential();
+
+    computeAccelerationsPotential<<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>>(d_N, d_PE, d_a, d_r);
     
     fprintf(tfp,"%i\n",N);
     fprintf(ofp,"  time (s)              T(t) (K)              P(t) (Pa)           Kinetic En. (n.u.)     Potential En. (n.u.) Total En. (n.u.)\n");
 
     for (i=0; i<NumTime+1; i++) {
         
-        Press = VelocityVerlet(dt, tfp);
+        Press = VelocityVerlet(dt, tfp, d_N, d_PE, d_a, d_r);
         Press *= PressFac;
 
         mvs = MeanSquaredVelocityKinetic()/N;
@@ -214,6 +244,25 @@ int main(){
     fclose(tfp);
     fclose(ofp);
     fclose(afp);
+
+    // -------------  CUDA ---------------
+    
+    // Copy Results from Device
+    cudaMemcpy(a, d_a, aux, cudaMemcpyHostToDevice);
+    cudaMemcpy(r, d_r, aux, cudaMemcpyHostToDevice);
+    // cudaMemcpy(v, d_v, aux, cudaMemcpyHostToDevice);
+    cudaMemcpy(&N, d_N, sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(&PE, d_PE, sizeof(double), cudaMemcpyHostToDevice);
+    checkCUDAError("Memcpy Device -> Host");
+
+    cudaFree(d_r);
+    cudaFree(d_v);
+    cudaFree(d_a);
+    cudaFree(d_N);
+    cudaFree(d_PE);
+    checkCUDAError("Mem Free");
+
+    // -------------  CUDA ---------------
     
     return 0;
 }
@@ -265,27 +314,34 @@ double MeanSquaredVelocityKinetic() {
 
 //   Uses the derivative of the Lennard-Jones potential to calculate
 //   the forces on each atom.  Then uses a = F/m to calculate the
-//   accelleration of each atom. 
-void computeAccelerationsPotential() {
+//   accelleration of each atom.
+__global__ 
+void computeAccelerationsPotential(int *d_N, double *d_PE, double *d_a, double *d_r) {
 
-    double Pot=0.0;
-    int size = N * 3; 
+    int id = blockIdx.x * blockDim.x + threadIdx.x;
+    double Pot = 0.0;
 
-    for (int i = 0; i < size; i++) {  // set all accelerations to zero
-        a[i] = 0;
+    // for (int i = 0; i < size; i++) {  // set all accelerations to zero
+    //     a[i] = 0;
+    // }
+
+    if (id < *d_N * 3) {
+        d_a[id] = 0.0;
     }
 
-    for (int i = 0; i < N-1; i++) {   
+    __syncthreads();  // Ensure all threads have zeroed out 'a' before proceeding
+
+    for (int i = 0; i < *d_N-1; i++) {   
         int pos1 = i*3;
 
-        for (int j = i+1; j < N; j++) {
+        for (int j = i+1; j < *d_N; j++) {
             double rij[3];
             int pos2 = j*3;
             double rSqd = 0;
 
-            rij[0] = r[pos1] - r[pos2];
-            rij[1] = r[pos1+1] - r[pos2+1];
-            rij[2] = r[pos1+2] - r[pos2+2];
+            rij[0] = d_r[pos1] - d_r[pos2];
+            rij[1] = d_r[pos1+1] - d_r[pos2+1];
+            rij[2] = d_r[pos1+2] - d_r[pos2+2];
 
             rSqd = rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2];
 
@@ -297,15 +353,15 @@ void computeAccelerationsPotential() {
 
             for (int k = 0; k < 3; k++) {
                 double auxrij = rij[k] * f;
-                a[pos1 + k] += auxrij;
-                a[pos2 + k] -= auxrij;
+                atomicAdd(&d_a[pos1 + k], auxrij);
+                atomicAdd(&d_a[pos2 + k], -auxrij);
             }
         }
     }
-    PE = Pot*8;
+    *d_PE = Pot*8;
 }
 
-double VelocityVerlet(double dt, FILE *fp) {
+double VelocityVerlet(double dt, FILE *fp, int *d_N, double *d_PE, double *d_a, double *d_r) {
     
     int i;
     double psum = 0., temp1, temp2, dt1 = 0.5 * dt;
@@ -320,7 +376,7 @@ double VelocityVerlet(double dt, FILE *fp) {
         v[i+1] += temp2;
     }
 
-    computeAccelerationsPotential();
+    computeAccelerationsPotential<<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>>(d_N, d_PE, d_a, d_r);
 
     for (i=0; i<N*3; i += 2) {
         v[i] += a[i] * dt1;
