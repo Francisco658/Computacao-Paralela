@@ -5,7 +5,7 @@ int N = 5000;
 
 // -------------  CUDA ---------------
 
-int NUM_THREADS_PER_BLOCK = 10;
+int NUM_THREADS_PER_BLOCK = 2;
 int NUM_BLOCKS_PER_PARTICLES = ((int) ceil((double) (N/NUM_THREADS_PER_BLOCK))) + 1;
 
 // -------------  CUDA ---------------
@@ -61,12 +61,11 @@ int main(){
 
     // -------------  CUDA ---------------
     int *d_N;
-    double *d_r, *d_v, *d_a, *d_PE;
+    double *d_r, *d_a, *d_PE; // *d_v,
 
     // Allocate the Memory on the Device
     cudaMalloc((void**)&d_r, aux);
-    cudaMalloc((void**)&d_r, aux);
-    cudaMalloc((void**)&d_v, aux);
+    // cudaMalloc((void**)&d_v, aux);
     cudaMalloc((void**)&d_a, aux);
     cudaMalloc((void**)&d_N, sizeof(int));
     cudaMalloc((void**)&d_PE, sizeof(double));
@@ -78,7 +77,7 @@ int main(){
     // cudaMemcpy(d_v, v, aux, cudaMemcpyHostToDevice);
     cudaMemcpy(d_N, &N, sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(d_PE, &PE, sizeof(double), cudaMemcpyHostToDevice);
-    checkCUDAError("memcpy h->d");
+    checkCUDAError("Memcpy Host -> Device");
 
     // -------------  CUDA ---------------
 
@@ -194,8 +193,11 @@ int main(){
 
     initialize();
 
-    computeAccelerationsPotential<<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>>(d_N, d_PE, d_a, d_r);
-    
+    startKernelTime ();
+    computeAccelerationsPotential <<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>> (d_N, d_PE, d_a, d_r);
+    stopKernelTime ();
+    checkCUDAError("Kernel Invocation Main");
+
     fprintf(tfp,"%i\n",N);
     fprintf(ofp,"  time (s)              T(t) (K)              P(t) (Pa)           Kinetic En. (n.u.)     Potential En. (n.u.) Total En. (n.u.)\n");
 
@@ -237,6 +239,25 @@ int main(){
     printf("\n  TOTAL VOLUME (m^3):                      %10.5e \n",Vol*VolFac);
     printf("\n  NUMBER OF PARTICLES (unitless):          %i \n", N);
     
+    // -------------  CUDA ---------------
+    
+    // Copy Results from Device
+    cudaMemcpy(a, d_a, aux, cudaMemcpyDeviceToHost);
+    // cudaMemcpy(r, d_r, aux, cudaMemcpyDeviceToHost);
+    // cudaMemcpy(v, d_v, aux, cudaMemcpyDeviceToHost);
+    // cudaMemcpy(&N, d_N, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaMemcpy(&PE, d_PE, sizeof(double), cudaMemcpyDeviceToHost);
+    checkCUDAError("Memcpy Device -> Host");
+
+    cudaFree(d_r);
+    // cudaFree(d_v);
+    cudaFree(d_a);
+    cudaFree(d_N);
+    cudaFree(d_PE);
+    checkCUDAError("Mem Free");
+
+    // -------------  CUDA ---------------
+    
     free(r);
     free(v);
     free(a);
@@ -245,25 +266,6 @@ int main(){
     fclose(ofp);
     fclose(afp);
 
-    // -------------  CUDA ---------------
-    
-    // Copy Results from Device
-    cudaMemcpy(a, d_a, aux, cudaMemcpyHostToDevice);
-    cudaMemcpy(r, d_r, aux, cudaMemcpyHostToDevice);
-    // cudaMemcpy(v, d_v, aux, cudaMemcpyHostToDevice);
-    cudaMemcpy(&N, d_N, sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(&PE, d_PE, sizeof(double), cudaMemcpyHostToDevice);
-    checkCUDAError("Memcpy Device -> Host");
-
-    cudaFree(d_r);
-    cudaFree(d_v);
-    cudaFree(d_a);
-    cudaFree(d_N);
-    cudaFree(d_PE);
-    checkCUDAError("Mem Free");
-
-    // -------------  CUDA ---------------
-    
     return 0;
 }
 
@@ -352,9 +354,13 @@ void computeAccelerationsPotential(int *d_N, double *d_PE, double *d_a, double *
             double f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
 
             for (int k = 0; k < 3; k++) {
+                // Este também não deu erro
+                // atomicAdd(reinterpret_cast<unsigned long long*>(&d_a[pos1 + k]), __double_as_longlong(rij[k] * f));
+                // atomicAdd(reinterpret_cast<unsigned long long*>(&d_a[pos2 + k]), -__double_as_longlong(rij[k] * f));
+
                 double auxrij = rij[k] * f;
-                atomicAdd(&d_a[pos1 + k], auxrij);
-                atomicAdd(&d_a[pos2 + k], -auxrij);
+                atomicAdd((unsigned long long int*) &d_a[pos1 + k], (unsigned long long int) auxrij);
+                atomicAdd((unsigned long long int*) &d_a[pos2 + k], (unsigned long long int) -auxrij);
             }
         }
     }
@@ -377,6 +383,7 @@ double VelocityVerlet(double dt, FILE *fp, int *d_N, double *d_PE, double *d_a, 
     }
 
     computeAccelerationsPotential<<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>>(d_N, d_PE, d_a, d_r);
+    checkCUDAError("Kernel Invocation VelocityVerlet");
 
     for (i=0; i<N*3; i += 2) {
         v[i] += a[i] * dt1;
