@@ -3,4 +3,17 @@
 #SBATCH --partition=cpar
 #SBATCH --constraint=k20
 
-nvprof ./bin/cuda
+nvprof --unified-memory-profiling off ./bin/cuda
+
+# --unified-memory-profiling off
+# --profile-from-start off
+# --openacc-profiling off
+
+# # Load necessary modules
+# module load cuda/11.3.1
+
+# # Define your executable
+# EXECUTABLE="./bin/cuda"
+
+# # Run the executable with cuda-memcheck
+# cuda-memcheck $EXECUTABLE < inputdata.txt

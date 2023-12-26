@@ -1,14 +1,25 @@
-#include "./MDCuda.h"
+#include "MDCuda.h"
+
+// -------------  CUDA ---------------
+
+#define NUM_BLOCKS_PER_PARTICLES 10
+#define NUM_THREADS_PER_BLOCK 20
+
+// int NUM_THREADS_PER_BLOCK = 256;
+// int NUM_BLOCKS_PER_PARTICLES = ((int) ceil((double) (N/NUM_THREADS_PER_BLOCK))) + 1;
+
+// -------------  CUDA ---------------
 
 // Number of particles
 int N = 5000;
 
 // -------------  CUDA ---------------
 
-int NUM_THREADS_PER_BLOCK = 2;
-int NUM_BLOCKS_PER_PARTICLES = ((int) ceil((double) (N/NUM_THREADS_PER_BLOCK))) + 1;
+__device__ int d_N;
+__device__ double d_PE;
 
 // -------------  CUDA ---------------
+
 
 double PE;
 double NA = 6.022140857e23;
@@ -25,9 +36,16 @@ const int MAXPART=5001;
 //  Position
 double* r = (double *) malloc(MAXPART*3*sizeof(double));
 //  Velocity
-double* v = (double *) malloc(MAXPART*3*sizeof(double));
+double* v= (double *) malloc(MAXPART*3*sizeof(double));
 //  Acceleration
-double* a = (double *) malloc(MAXPART*3*sizeof(double));
+double* a= (double *) malloc(MAXPART*3*sizeof(double));
+
+// -------------  CUDA ---------------
+
+double *d_r, *d_a; // *d_PE;
+double aux = MAXPART * 3 * sizeof(double);
+
+// -------------  CUDA ---------------
 
 char *atype = (char *)malloc(3 * sizeof(char));
 
@@ -39,12 +57,12 @@ void initialize();
 //  update positions and velocities using Velocity Verlet algorithm 
 //  print particle coordinates to file for rendering via VMD or other animation software
 //  return 'instantaneous pressure'
-double VelocityVerlet(double dt, FILE *fp, int *d_N, double *d_PE, double *d_a, double *d_r);  
+double VelocityVerlet(double dt, FILE *fp);  
 
 //  Compute Force using F = -dV/dr
 //  solve F = ma for use in Velocity Verlet
 //  Compute total potential energy from particle coordinates
-__global__ void computeAccelerationsPotential(int *d_N, double *d_PE, double *d_a, double *d_r);
+__global__ void computeAccelerationsPotentialGPU(double *d_a, double *d_r);
 
 //  Numerical Recipes function for generation gaussian distribution
 double gaussdist();
@@ -55,31 +73,15 @@ void initializeVelocities();
 //  Compute mean squared velocity from particle velocities and total kinetic energy from particle mass and velocities
 double MeanSquaredVelocityKinetic();
 
+__device__ double atomicAddDouble(double* address, double val); 
+
+void computeAccelerationsPotential();
+
+// void freeKernel();
+
+// void initializeKernel();
+
 int main(){
-
-    double aux = MAXPART * 3 * sizeof(double);
-
-    // -------------  CUDA ---------------
-    int *d_N;
-    double *d_r, *d_a, *d_PE; // *d_v,
-
-    // Allocate the Memory on the Device
-    cudaMalloc((void**)&d_r, aux);
-    // cudaMalloc((void**)&d_v, aux);
-    cudaMalloc((void**)&d_a, aux);
-    cudaMalloc((void**)&d_N, sizeof(int));
-    cudaMalloc((void**)&d_PE, sizeof(double));
-    checkCUDAError("Mem Allocation");
-
-    // Copy all working Data to Device
-    cudaMemcpy(d_a, a, aux, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_r, r, aux, cudaMemcpyHostToDevice);
-    // cudaMemcpy(d_v, v, aux, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_N, &N, sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_PE, &PE, sizeof(double), cudaMemcpyHostToDevice);
-    checkCUDAError("Memcpy Host -> Device");
-
-    // -------------  CUDA ---------------
 
     int i, NumTime;
     double dt, Vol, Temp, Press, Pavg = 0, Tavg = 0, rho, VolFac, TempFac, PressFac, timefac, KE, mvs, gc, Z;
@@ -163,6 +165,9 @@ int main(){
     
     scanf("%lf",&rho);
 
+    // Copy N to the device variable d_N
+    cudaMemcpyToSymbol(d_N, &N, sizeof(int));
+
     Vol = N/(rho*NA);
     
     Vol /= VolFac;
@@ -192,18 +197,34 @@ int main(){
     }
 
     initialize();
+    
+    // -------------  CUDA ---------------
 
-    startKernelTime ();
-    computeAccelerationsPotential <<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>> (d_N, d_PE, d_a, d_r);
-    stopKernelTime ();
-    checkCUDAError("Kernel Invocation Main");
+    // initializeKernel();
+    
+    // Start the Kernel
+    // startKernelTime ();
+    // computeAccelerationsPotential <<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>> (d_N, d_PE, d_a, d_r);
+    // stopKernelTime ();
+    // checkCUDAError("Kernel Invocation");
+
+    // Ensure the kernel has finished
+    // cudaDeviceSynchronize(); 
+    // checkCUDAError("Synchronize");
+
+    // -------------  CUDA ---------------
+
+    // Copy N to the device variable d_N
+    // cudaMemcpyToSymbol(d_PE, &PE, sizeof(double));
+    computeAccelerationsPotential();
+
 
     fprintf(tfp,"%i\n",N);
     fprintf(ofp,"  time (s)              T(t) (K)              P(t) (Pa)           Kinetic En. (n.u.)     Potential En. (n.u.) Total En. (n.u.)\n");
 
     for (i=0; i<NumTime+1; i++) {
         
-        Press = VelocityVerlet(dt, tfp, d_N, d_PE, d_a, d_r);
+        Press = VelocityVerlet(dt, tfp);
         Press *= PressFac;
 
         mvs = MeanSquaredVelocityKinetic()/N;
@@ -240,24 +261,19 @@ int main(){
     printf("\n  NUMBER OF PARTICLES (unitless):          %i \n", N);
     
     // -------------  CUDA ---------------
-    
-    // Copy Results from Device
-    cudaMemcpy(a, d_a, aux, cudaMemcpyDeviceToHost);
-    // cudaMemcpy(r, d_r, aux, cudaMemcpyDeviceToHost);
-    // cudaMemcpy(v, d_v, aux, cudaMemcpyDeviceToHost);
-    // cudaMemcpy(&N, d_N, sizeof(int), cudaMemcpyDeviceToHost);
-    cudaMemcpy(&PE, d_PE, sizeof(double), cudaMemcpyDeviceToHost);
-    checkCUDAError("Memcpy Device -> Host");
 
-    cudaFree(d_r);
-    // cudaFree(d_v);
-    cudaFree(d_a);
-    cudaFree(d_N);
-    cudaFree(d_PE);
-    checkCUDAError("Mem Free");
+    // // Copy Results from Device
+    // cudaMemcpy(a, d_a, aux, cudaMemcpyDeviceToHost);
+    // cudaMemcpy(r, d_r, aux, cudaMemcpyDeviceToHost);
+    // cudaMemcpy(&N, d_N, sizeof(int), cudaMemcpyDeviceToHost);
+    // cudaMemcpy(&PE, d_PE, sizeof(double), cudaMemcpyDeviceToHost);
+    // checkCUDAError("Memcpy Device -> Host");
+
+
+    // freeKernel();
 
     // -------------  CUDA ---------------
-    
+
     free(r);
     free(v);
     free(a);
@@ -265,7 +281,7 @@ int main(){
     fclose(tfp);
     fclose(ofp);
     fclose(afp);
-
+    
     return 0;
 }
 
@@ -314,60 +330,134 @@ double MeanSquaredVelocityKinetic() {
     return v2;
 }
 
+// -------------  CUDA ---------------~
+__device__ double atomicAddDouble(double* address, double val) {
+    unsigned long long int* address_as_ull = (unsigned long long int*)address;
+    unsigned long long int old = *address_as_ull, assumed;
+
+    do {
+        assumed = old;
+        old = atomicCAS(address_as_ull, assumed, __double_as_longlong(val +
+                       __longlong_as_double(assumed)));
+    } while (assumed != old);
+
+    return __longlong_as_double(old);
+}
+
 //   Uses the derivative of the Lennard-Jones potential to calculate
 //   the forces on each atom.  Then uses a = F/m to calculate the
-//   accelleration of each atom.
-__global__ 
-void computeAccelerationsPotential(int *d_N, double *d_PE, double *d_a, double *d_r) {
+//   accelleration of each atom. 
+__global__ void computeAccelerationsPotentialGPU(double *d_a, double *d_r) {
 
-    int id = blockIdx.x * blockDim.x + threadIdx.x;
     double Pot = 0.0;
+    // int id = blockIdx.x * blockDim.x + threadIdx.x;
 
-    // for (int i = 0; i < size; i++) {  // set all accelerations to zero
-    //     a[i] = 0;
-    // }
+    __shared__ double shared_d_r[MAXPART*3];
 
-    if (id < *d_N * 3) {
-        d_a[id] = 0.0;
-    }
+    for (int k = 0; k < 3; k++) {
+        shared_d_r[threadIdx.x * 3 + k] = d_r[threadIdx.x * 3 + k];
+    }   
 
-    __syncthreads();  // Ensure all threads have zeroed out 'a' before proceeding
+    __syncthreads(); 
 
-    for (int i = 0; i < *d_N-1; i++) {   
-        int pos1 = i*3;
+    for (int i = 0; i < d_N - 1; i++) {   
+        int pos1 = i*3; 
 
-        for (int j = i+1; j < *d_N; j++) {
+        for (int j = i+1; j < d_N; j++) {
             double rij[3];
             int pos2 = j*3;
             double rSqd = 0;
 
-            rij[0] = d_r[pos1] - d_r[pos2];
-            rij[1] = d_r[pos1+1] - d_r[pos2+1];
-            rij[2] = d_r[pos1+2] - d_r[pos2+2];
+            // rij[0] = d_r[pos1] - d_r[pos2];
+            // rij[1] = d_r[pos1+1] - d_r[pos2+1];
+            // rij[2] = d_r[pos1+2] - d_r[pos2+2];
+
+            rij[0] = shared_d_r[threadIdx.x * 3] - shared_d_r[threadIdx.x * 3];
+            rij[1] = shared_d_r[threadIdx.x * 3 + 1] - shared_d_r[threadIdx.x * 3 + 1];
+            rij[2] = shared_d_r[threadIdx.x * 3 + 2] - shared_d_r[threadIdx.x * 3 + 2];
 
             rSqd = rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2];
 
             double rSqd3 = rSqd*rSqd*rSqd;
             double rSqd6 = rSqd3*rSqd3;
-            Pot+=((1-rSqd3)/(rSqd6));
+            Pot += ((1-rSqd3)/(rSqd6));
             
             double f = ((48 - 24*rSqd3)/(rSqd6*rSqd));
 
             for (int k = 0; k < 3; k++) {
-                // Este também não deu erro
-                // atomicAdd(reinterpret_cast<unsigned long long*>(&d_a[pos1 + k]), __double_as_longlong(rij[k] * f));
-                // atomicAdd(reinterpret_cast<unsigned long long*>(&d_a[pos2 + k]), -__double_as_longlong(rij[k] * f));
-
                 double auxrij = rij[k] * f;
-                atomicAdd((unsigned long long int*) &d_a[pos1 + k], (unsigned long long int) auxrij);
-                atomicAdd((unsigned long long int*) &d_a[pos2 + k], (unsigned long long int) -auxrij);
+                atomicAddDouble(&d_a[pos1 + k], auxrij);
+                atomicAddDouble(&d_a[pos2 + k], -auxrij);
             }
         }
     }
-    *d_PE = Pot*8;
+    d_PE = Pot * 8;
+    // *d_PE = Pot * 8;
 }
 
-double VelocityVerlet(double dt, FILE *fp, int *d_N, double *d_PE, double *d_a, double *d_r) {
+void computeAccelerationsPotential() {
+
+    // for (int i = 0; i < N; i++)
+        // a[i][0] = a[i][1] = a[i][2] = 0;
+    
+    int size = N * 3; 
+
+    for (int i = 0; i < size; i++) {  // set all accelerations to zero
+        a[i] = 0;
+    }
+
+    // double v_Pot[N];
+
+    // pointers to the device memory
+    // double (*ak)[3];
+    // double (*rk)[3];
+    // double* Pot_dev;
+
+    // declare variable with size of the array in bytes
+    // int bytes = N * 3 * sizeof(double);
+
+    // Allocate the Memory on the Device
+    cudaMalloc((void**)&d_r, aux);
+    cudaMalloc((void**)&d_a, aux);
+    // cudaMalloc((void**)&d_PE, sizeof(double));
+    // cudaMalloc((void**)&Pot_dev, N * sizeof(double) - 1);
+    checkCUDAError("Mem Allocation");
+
+    // Copy all working Data to Device
+    cudaMemcpy(d_a, a, aux, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_r, r, aux, cudaMemcpyHostToDevice);
+    checkCUDAError("Memcpy Host -> Device");
+
+    int bpg = (N + 16 - 1) / 16;  // Arredondamento para cima
+    // launch the kernel with correct arguments
+    computeAccelerationsPotentialGPU<<<bpg, 16>>>(d_a, d_r);
+    cudaDeviceSynchronize();
+    checkCUDAError("Error in CUDA Kernel");
+    // cudaError_t error = cudaGetLastError();
+    // if (error != cudaSuccess) {
+    //     fprintf(stderr, "Error in CUDA kernel: %s\n", cudaGetErrorString(error));
+    // }
+
+    // copy the output to the host (if needed)
+    cudaMemcpy(a, d_a, aux, cudaMemcpyDeviceToHost);
+    cudaMemcpy(r, d_r, aux, cudaMemcpyDeviceToHost);
+    // cudaMemcpy(&PE, d_PE, sizeof(double), cudaMemcpyDeviceToHost);
+    checkCUDAError("Memcpy Device -> Host");
+
+    // for (int i = 0; i < N; i++)
+    //     Pot += v_Pot[i];
+
+    // Free allocated memory
+    cudaFree(d_r);
+    cudaFree(d_a);
+    // cudaFree(d_PE);
+
+    // return Pot * 2;
+}
+
+// -------------  CUDA ---------------
+
+double VelocityVerlet(double dt, FILE *fp) {
     
     int i;
     double psum = 0., temp1, temp2, dt1 = 0.5 * dt;
@@ -382,8 +472,17 @@ double VelocityVerlet(double dt, FILE *fp, int *d_N, double *d_PE, double *d_a, 
         v[i+1] += temp2;
     }
 
-    computeAccelerationsPotential<<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>>(d_N, d_PE, d_a, d_r);
-    checkCUDAError("Kernel Invocation VelocityVerlet");
+    // Start the Kernel
+    // startKernelTime ();
+    // computeAccelerationsPotential <<<NUM_BLOCKS_PER_PARTICLES, NUM_THREADS_PER_BLOCK>>> (d_N, d_PE, d_a, d_r);
+    // stopKernelTime ();
+    // checkCUDAError("Kernel Invocation");
+
+    computeAccelerationsPotential();
+
+    // Ensure the kernel has finished
+    // cudaDeviceSynchronize(); 
+    // checkCUDAError("Synchronize");
 
     for (i=0; i<N*3; i += 2) {
         v[i] += a[i] * dt1;
@@ -471,3 +570,33 @@ double gaussdist() {
     }
     return returnValue;
 }
+
+// // -------------  CUDA ---------------
+
+// void initializeKernel () {
+
+//     // Allocate the Memory on the Device
+//     cudaMalloc((void**)&d_r, aux);
+//     cudaMalloc((void**)&d_a, aux);
+//     // cudaMalloc((void**)&d_N, sizeof(int));
+//     cudaMalloc((void**)&d_PE, sizeof(double));
+//     checkCUDAError("Mem Allocation");
+
+//     // Copy all working Data to Device
+//     cudaMemcpy(d_a, a, aux, cudaMemcpyHostToDevice);
+//     cudaMemcpy(d_r, r, aux, cudaMemcpyHostToDevice);
+//     // cudaMemcpy(d_N, &N, sizeof(int), cudaMemcpyHostToDevice);
+//     // cudaMemcpy(d_PE, &PE, sizeof(double), cudaMemcpyHostToDevice);
+//     checkCUDAError("Memcpy Host -> Device");
+// }
+
+// void freeKernel () {
+
+//     // Free allocated memory
+//     cudaFree(d_r);
+//     cudaFree(d_a);
+//     cudaFree(d_N);
+//     cudaFree(d_PE);
+// }
+
+// // -------------  CUDA ---------------
