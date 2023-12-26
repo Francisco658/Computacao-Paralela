@@ -2,8 +2,8 @@
 
 // -------------  CUDA ---------------
 
-#define NUM_BLOCKS_PER_PARTICLES 10
-#define NUM_THREADS_PER_BLOCK 20
+// #define NUM_BLOCKS_PER_PARTICLES 10
+// #define NUM_THREADS_PER_BLOCK 20
 
 // int NUM_THREADS_PER_BLOCK = 256;
 // int NUM_BLOCKS_PER_PARTICLES = ((int) ceil((double) (N/NUM_THREADS_PER_BLOCK))) + 1;
@@ -350,17 +350,18 @@ __device__ double atomicAddDouble(double* address, double val) {
 __global__ void computeAccelerationsPotentialGPU(double *d_a, double *d_r) {
 
     double Pot = 0.0;
-    // int id = blockIdx.x * blockDim.x + threadIdx.x;
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
 
-    __shared__ double shared_d_r[MAXPART*3];
+    __shared__ double shared_d_r[16*3];
 
-    for (int k = 0; k < 3; k++) {
-        shared_d_r[threadIdx.x * 3 + k] = d_r[threadIdx.x * 3 + k];
+    for (int k = 0; k < 3; ++k) {
+        shared_d_r[threadIdx.x * 3 + k] = d_r[i * 3 + k];
     }   
 
-    __syncthreads(); 
+    // __syncthreads(); 
 
-    for (int i = 0; i < d_N - 1; i++) {   
+    // for (i = 0; i < d_N - 1; i++) {   
+    if (i < d_N - 1) {
         int pos1 = i*3; 
 
         for (int j = i+1; j < d_N; j++) {
@@ -368,13 +369,13 @@ __global__ void computeAccelerationsPotentialGPU(double *d_a, double *d_r) {
             int pos2 = j*3;
             double rSqd = 0;
 
-            // rij[0] = d_r[pos1] - d_r[pos2];
-            // rij[1] = d_r[pos1+1] - d_r[pos2+1];
-            // rij[2] = d_r[pos1+2] - d_r[pos2+2];
+            rij[0] = shared_d_r[threadIdx.x * 3] - d_r[pos2];
+            rij[1] = shared_d_r[threadIdx.x * 3 + 1] - d_r[pos2+1];
+            rij[2] = shared_d_r[threadIdx.x * 3 + 2] - d_r[pos2+2];
 
-            rij[0] = shared_d_r[threadIdx.x * 3] - shared_d_r[threadIdx.x * 3];
-            rij[1] = shared_d_r[threadIdx.x * 3 + 1] - shared_d_r[threadIdx.x * 3 + 1];
-            rij[2] = shared_d_r[threadIdx.x * 3 + 2] - shared_d_r[threadIdx.x * 3 + 2];
+            // rij[0] = shared_d_r[threadIdx.x * 3] - shared_d_r[threadIdx.x * 3];
+            // rij[1] = shared_d_r[threadIdx.x * 3 + 1] - shared_d_r[threadIdx.x * 3 + 1];
+            // rij[2] = shared_d_r[threadIdx.x * 3 + 2] - shared_d_r[threadIdx.x * 3 + 2];
 
             rSqd = rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2];
 
@@ -430,7 +431,7 @@ void computeAccelerationsPotential() {
 
     int bpg = (N + 16 - 1) / 16;  // Arredondamento para cima
     // launch the kernel with correct arguments
-    computeAccelerationsPotentialGPU<<<bpg, 16>>>(d_a, d_r);
+    computeAccelerationsPotentialGPU<<<bpg, 8>>>(d_a, d_r);
     cudaDeviceSynchronize();
     checkCUDAError("Error in CUDA Kernel");
     // cudaError_t error = cudaGetLastError();
