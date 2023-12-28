@@ -3,7 +3,7 @@
 #SBATCH --partition=cpar
 #SBATCH --constraint=k20
 
-nvprof --unified-memory-profiling off ./bin/cuda
+nvprof ./bin/cuda < inputdata.txt
 
 # --unified-memory-profiling off
 # --profile-from-start off
