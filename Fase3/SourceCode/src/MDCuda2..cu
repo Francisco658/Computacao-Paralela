@@ -77,7 +77,7 @@ double MeanSquaredVelocityKinetic();
 
 __device__ double atomicAddDouble(double* address, double val); 
 
-double computeAccelerationsPotential();
+void computeAccelerationsPotential();
 
 // void freeKernel();
 
@@ -420,7 +420,7 @@ __global__ void computeAccelerationsPotentialGPU(double *d_a, double *d_r, doubl
 //     }
 // }
 
-double computeAccelerationsPotential() {
+void computeAccelerationsPotential() {
 
     double Pot=0.0;
     double v_Pot[N];
@@ -465,7 +465,7 @@ double computeAccelerationsPotential() {
     cudaFree(d_Pot);
     checkCUDAError("Free Mem");
 
-    return Pot * 8;
+    PE = Pot * 8;
 }
 
 // -------------  CUDA ---------------
