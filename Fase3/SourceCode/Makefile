@@ -38,7 +38,7 @@ BIN_NAME = cuda
 CXX = nvcc
 LD  = nvcc
 
-CXXFLAGS   = -O2 -g -std=c++11 -arch=sm_35 -Wno-deprecated-gpu-targets # -Xptxas -v
+CXXFLAGS   = -O2 -g -std=c++11 -arch=sm_35 -Wno-deprecated-gpu-targets 
 
 SRC_DIR = src
 BIN_DIR = bin
@@ -72,7 +72,8 @@ all: checkdirs $(BIN_DIR)/$(BIN_NAME)
 # 	module load cuda/11.3.1;
 
 run:
-	sbatch run.sh
+	sbatch --partition cpar --constraint=k20 --ntasks=16 --time=5:00 ./run.sh
+# sbatch run.sh
 
 clean:
 	find . -type f \( ! -path "./src/*" ! -name "Makefile" ! -name "run.sh" ! -name "inputdata.txt" \) -exec rm -v {} \;

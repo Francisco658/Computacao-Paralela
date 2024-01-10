@@ -1,19 +1,15 @@
 #!/bin/bash
-#SBATCH --time=1:00
+#SBATCH --time=5:00
 #SBATCH --partition=cpar
 #SBATCH --constraint=k20
 
-nvprof ./bin/cuda < inputdata.txt
+time nvprof ./bin/cuda < inputdata.txt
 
-# --unified-memory-profiling off
-# --profile-from-start off
-# --openacc-profiling off
-
-# # Load necessary modules
-# module load cuda/11.3.1
-
-# # Define your executable
-# EXECUTABLE="./bin/cuda"
-
-# # Run the executable with cuda-memcheck
-# cuda-memcheck $EXECUTABLE < inputdata.txt
+# --metrics achieved_occupancy,sm_efficiency
+# --metrics dram_read_throughput,dram_write_throughput,l2_read_throughput,l2_write_throughput
+# --metrics flop_count_dp,flop_count_sp,inst_executed
+# --metrics warp_execution_efficiency
+# --metrics achieved_occupancy
+# --metrics kernel_elapsed_time,api_elapsed_time
+# --nst_executed
+# --cpu-profiling on
