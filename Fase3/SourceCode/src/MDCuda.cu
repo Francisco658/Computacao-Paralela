@@ -156,8 +156,12 @@ int main(){
     
     scanf("%lf",&rho);
 
+    // -------------  CUDA ---------------
+
     // Copy N to the device variable d_N
     cudaMemcpyToSymbol(d_N, &N, sizeof(int));
+
+    // -------------  CUDA ---------------
 
     Vol = N/(rho*NA);
     
